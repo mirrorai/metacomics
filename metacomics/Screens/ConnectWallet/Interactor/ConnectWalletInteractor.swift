@@ -8,6 +8,10 @@ class ConnectWalletInteractor {
     enum Error: Swift.Error {
         case connectionError
         case authError
+        case generateChallengeError
+        case getProfilesError
+        case invalidUsername
+        case textError(description: String)
     }
     
     let walletConnectionSubject = PassthroughSubject<String, Error>()
@@ -72,8 +76,13 @@ class ConnectWalletInteractor {
 //        walletConnect.sign(message: message)
     }
     
-    func login() {
+    func login(completion: @escaping (Swift.Result<String, Error>) -> Void) {
         guard let wallet = walletAddress else { return }
+        let key = UserDefaults.DefaultsKeys.authenticateAccessToken.rawValue
+        if let token = UserDefaults.standard.string(forKey: key) {
+            completion(.success(token))
+            return
+        }
         generateChallenge(address: wallet) { [weak self] result in
             guard let self = self else { return }
             guard let text = try? result.get() else { return }
@@ -83,6 +92,7 @@ class ConnectWalletInteractor {
                     guard let accessToken = try? authResult.get() else { return }
                     let key = UserDefaults.DefaultsKeys.authenticateAccessToken.rawValue
                     UserDefaults.standard.set(accessToken, forKey: key)
+                    completion(.success(""))
                 }
             }
         }
@@ -130,10 +140,133 @@ class ConnectWalletInteractor {
                 }
             case .failure(let error):
                 print("Failure! Error: \(error)")
-                completion(.failure(error as! ConnectWalletInteractor.Error))
+                completion(.failure(.generateChallengeError))
             }
         }
     }
+    
+    func getProfiles(completion: @escaping (Swift.Result<[Any], Error>) -> Void) {
+        guard let wallet = walletAddress else { return }
+        let request = ProfileQueryRequest(
+            limit: nil,
+            cursor: nil,
+            profileIds: nil,
+            ownedBy: [wallet],
+            handles: nil,
+            whoMirroredPublicationId: nil
+        )
+        let query = GetProfilesQuery(request: request)
+        ApolloNetwork.shared.client.fetch(query: query) { result in
+            switch result {
+            case .success(let graphQLResult):
+                print("Success! Result: \(graphQLResult)")
+                guard let items = graphQLResult.data?.profiles.items else { return }
+                print(items)
+                self.onMainThread {
+                    completion(.success(items))
+                }
+            case .failure(let error):
+                print("Failure! Error: \(error)")
+                completion(.failure(.getProfilesError))
+            }
+        }
+    }
+    
+    func addProfile(username: String, completion: @escaping (Swift.Result<String, Error>) -> Void) {
+        guard
+            !username.isEmpty,
+            username.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) == nil,
+            username.lowercased() == username
+        else {
+            completion(.failure(.invalidUsername))
+            return
+        }
+        guard let wallet = walletAddress else { return }
+        login { result in
+            guard let token = try? result.get() else { return }
+            self.createProfile(username: username, addres: wallet) { result in
+                guard let txHash = try? result.get() else { return }
+                self.hasTxBeenIndexed(txHash: txHash) { hasTxBeenIndexedResult in
+                    guard let value = try? hasTxBeenIndexedResult.get() else { return }
+                }
+            }
+            
+        }
+    }
+    
+    func createProfile(username: String, addres: String, completion: @escaping (Swift.Result<String, Error>) -> Void) {
+        let request = CreateProfileRequest(
+            handle: username,
+            profilePictureUri: nil,
+            followModule: nil,
+            followNfturi: nil
+        )
+        let mutation = CreateProfileMutation(request: request)
+        ApolloNetwork.shared.client.perform(mutation: mutation) { result in
+            switch result {
+            case .success(let graphQLResult):
+                print("Success! Result: \(graphQLResult)")
+                guard let txHash = graphQLResult.data?.createProfile.asRelayerResult?.txHash else { return }
+                print(txHash)
+                self.onMainThread {
+                    completion(.success(txHash))
+                }
+            case .failure(let error):
+                print("Failure! Error: \(error)")
+                completion(.failure(.authError))
+                if case let .invalidResponseCode(response, rawData) = (error as! Apollo.ResponseCodeInterceptor.ResponseCodeError), let data = rawData {
+                        print(String(data: data, encoding: .utf8))
+                }
+            }
+        }
+    }
+    
+    private func hasTxBeenIndexed(txHash: String, completion: @escaping (Swift.Result<(String, String), Error>) -> Void) {
+        let request = HasTxHashBeenIndexedRequest(txHash: txHash)
+        let query = HasTxHashBeenIndexedQuery(request: request)
+        ApolloNetwork.shared.client.fetch(query: query) { result in
+            switch result {
+            case .success(let graphQLResult):
+                print("Success! Result: \(graphQLResult)")
+                guard
+                    let data = graphQLResult.data,
+                    let hasTxHashBeenIndexed = graphQLResult.data?.hasTxHashBeenIndexed,
+                    hasTxHashBeenIndexed.__typename == "TransactionIndexedResult"
+                else { return }
+                print(hasTxHashBeenIndexed)
+                
+                if let metadataStatus = hasTxHashBeenIndexed.asTransactionIndexedResult?.metadataStatus {
+                    if metadataStatus.status.rawValue == "SUCCESS" {
+                        completion(.success(("data", "logs")))
+                        return
+                    }
+                    if metadataStatus.status.rawValue == "METADATA_VALIDATION_FAILED" {
+                        completion(.failure(.textError(description: metadataStatus.reason ?? "")))
+                        return
+                    }
+                } else {
+                    if hasTxHashBeenIndexed.asTransactionIndexedResult?.indexed == true {
+                        completion(.success(("data", "logs")))
+                       return
+                    }
+                }
+                do {
+                    sleep(1)
+                }
+                self.hasTxBeenIndexed(txHash: txHash, completion: completion)
+//                self.onMainThread {
+//                    completion(.success(items))
+//                }
+            case .failure(let error):
+                print("Failure! Error: \(error)")
+                completion(.failure(.getProfilesError))
+            }
+        }
+    }
+    
+//    private func pollUntilIndexed(txHash: String, completion: @escaping (Swift.Result<Bool, Error>) -> Void) {
+//        hasTxBeenIndexed(txHash: txHash, completion: <#T##(Result<Bool, Error>) -> Void#>)
+//    }
     
 }
 

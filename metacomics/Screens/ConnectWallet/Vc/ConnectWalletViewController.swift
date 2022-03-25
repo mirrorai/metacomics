@@ -43,7 +43,18 @@ class ConnectWalletViewController: UIViewController {
         activityIndicator.stopAnimating()
         
 //        interactor.sign(message: "aaaa")
-        interactor.login()
+        let key = UserDefaults.DefaultsKeys.authenticateAccessToken.rawValue
+        UserDefaults.standard.set(nil, forKey: key)
+        interactor.login() { _ in
+//            self.interactor.getProfiles { result in
+//                guard let profiles = try? result.get() else { return }
+//                print(profiles)
+//            }
+            self.interactor.addProfile(username: "testuser1") { result in
+                guard let value = try? result.get() else { return }
+                
+            }
+        }
     }
     
     

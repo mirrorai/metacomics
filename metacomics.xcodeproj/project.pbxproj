@@ -36,6 +36,10 @@
 		B4DFDD8A27EE0C6B0004B7CC /* NetworkInterceptorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD8927EE0C6B0004B7CC /* NetworkInterceptorProvider.swift */; };
 		B4DFDD8C27EE16C10004B7CC /* Authenticate.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B4DFDD8B27EE16C10004B7CC /* Authenticate.graphql */; };
 		B4DFDD8E27EE24F30004B7CC /* UserDefaults+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD8D27EE24F30004B7CC /* UserDefaults+Keys.swift */; };
+		B4DFDD9027EE27B80004B7CC /* GetProfiles.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B4DFDD8F27EE27B80004B7CC /* GetProfiles.graphql */; };
+		B4DFDD9227EE2BDE0004B7CC /* CreateProfile.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B4DFDD9127EE2BDE0004B7CC /* CreateProfile.graphql */; };
+		B4DFDD9427EE2DB10004B7CC /* HasTxHashBeenIndexed.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B4DFDD9327EE2DB10004B7CC /* HasTxHashBeenIndexed.graphql */; };
+		B4DFDD9627EE3E420004B7CC /* NSError+Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD9527EE3E420004B7CC /* NSError+Text.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +70,10 @@
 		B4DFDD8927EE0C6B0004B7CC /* NetworkInterceptorProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInterceptorProvider.swift; sourceTree = "<group>"; };
 		B4DFDD8B27EE16C10004B7CC /* Authenticate.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Authenticate.graphql; sourceTree = "<group>"; };
 		B4DFDD8D27EE24F30004B7CC /* UserDefaults+Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Keys.swift"; sourceTree = "<group>"; };
+		B4DFDD8F27EE27B80004B7CC /* GetProfiles.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = GetProfiles.graphql; sourceTree = "<group>"; };
+		B4DFDD9127EE2BDE0004B7CC /* CreateProfile.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateProfile.graphql; sourceTree = "<group>"; };
+		B4DFDD9327EE2DB10004B7CC /* HasTxHashBeenIndexed.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = HasTxHashBeenIndexed.graphql; sourceTree = "<group>"; };
+		B4DFDD9527EE3E420004B7CC /* NSError+Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Text.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +140,7 @@
 				B4DFDD4B27EB0FBE0004B7CC /* Aliases.swift */,
 				B4DFDD4F27EB11440004B7CC /* UIViewController+Alert.swift */,
 				B4DFDD8D27EE24F30004B7CC /* UserDefaults+Keys.swift */,
+				B4DFDD9527EE3E420004B7CC /* NSError+Text.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -205,6 +214,9 @@
 				053DA54327EDDDA50016EFD8 /* Ping.graphql */,
 				B4DFDD8527EDE8520004B7CC /* GenerateChallenge.graphql */,
 				B4DFDD8B27EE16C10004B7CC /* Authenticate.graphql */,
+				B4DFDD8F27EE27B80004B7CC /* GetProfiles.graphql */,
+				B4DFDD9127EE2BDE0004B7CC /* CreateProfile.graphql */,
+				B4DFDD9327EE2DB10004B7CC /* HasTxHashBeenIndexed.graphql */,
 				B4DFDD8327EDE1E50004B7CC /* API.swift */,
 				B4DFDD7C27EDD8880004B7CC /* schema.json */,
 				B4DFDD7427EDC4280004B7CC /* ApolloNetwork.swift */,
@@ -287,12 +299,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4DFDD3B27EB02710004B7CC /* LaunchScreen.storyboard in Resources */,
+				B4DFDD9227EE2BDE0004B7CC /* CreateProfile.graphql in Resources */,
 				053DA54927EDDF240016EFD8 /* Ping.graphql in Resources */,
 				B4DFDD3827EB02710004B7CC /* Assets.xcassets in Resources */,
 				B4DFDD8C27EE16C10004B7CC /* Authenticate.graphql in Resources */,
+				B4DFDD9027EE27B80004B7CC /* GetProfiles.graphql in Resources */,
 				B4DFDD8627EDE8520004B7CC /* GenerateChallenge.graphql in Resources */,
 				B4DFDD5B27EB70630004B7CC /* Contract.json in Resources */,
 				053DA54827EDDE3F0016EFD8 /* schema.json in Resources */,
+				B4DFDD9427EE2DB10004B7CC /* HasTxHashBeenIndexed.graphql in Resources */,
 				B4DFDD3627EB026B0004B7CC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -333,6 +348,7 @@
 				B4DFDD4E27EB10880004B7CC /* WalletConnect.swift in Sources */,
 				B4DFDD4627EB0EDF0004B7CC /* ConnectWalletInteractor.swift in Sources */,
 				B4DFDD4427EB06C90004B7CC /* ConnectWalletViewController.swift in Sources */,
+				B4DFDD9627EE3E420004B7CC /* NSError+Text.swift in Sources */,
 				B4DFDD3127EB026B0004B7CC /* SceneDelegate.swift in Sources */,
 				B4DFDD6327EC5A180004B7CC /* SelectTokensViewController.swift in Sources */,
 				B4DFDD5027EB11440004B7CC /* UIViewController+Alert.swift in Sources */,
