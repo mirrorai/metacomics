@@ -40,6 +40,30 @@ class WalletConnect {
         try? client.connect(to: wcUrl)
         return wcUrl.absoluteString
     }
+    
+    func sign(message: String) {
+        do {
+//            try client.personal_sign(
+//                url: session.url,
+//                message: "Hi there!",
+//                account: session.walletInfo!.accounts[0]
+            try client.eth_sign(
+                url: session.url,
+                account: session.walletInfo!.accounts[0],
+                message: "Hi there!"
+            ) { response in
+                // handle the response from Wallet here
+                let url = response.url
+                print("Sign url: \(url)")
+                if let error = response.error {
+                    print("Sign error: \(error)")
+                }
+                
+            }
+        } catch {
+            print(error)
+        }
+    }
 
     func reconnectIfNeeded() {
         if let oldSessionObject = UserDefaults.standard.object(forKey: sessionKey) as? Data,

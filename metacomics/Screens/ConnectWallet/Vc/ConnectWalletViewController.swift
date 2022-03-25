@@ -41,6 +41,8 @@ class ConnectWalletViewController: UIViewController {
         connectWalletButton.isEnabled = false
         statusLabel.text = "🦆 Connected"
         activityIndicator.stopAnimating()
+        
+        interactor.sign(message: "aaaa")
     }
     
     

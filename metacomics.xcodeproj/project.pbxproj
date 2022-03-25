@@ -31,6 +31,7 @@
 		B4DFDD6A27ECAC7F0004B7CC /* ApolloUtils in Frameworks */ = {isa = PBXBuildFile; productRef = B4DFDD6927ECAC7F0004B7CC /* ApolloUtils */; };
 		B4DFDD6C27ECAC7F0004B7CC /* ApolloWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = B4DFDD6B27ECAC7F0004B7CC /* ApolloWebSocket */; };
 		B4DFDD7527EDC4280004B7CC /* Apollo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD7427EDC4280004B7CC /* Apollo.swift */; };
+		B4DFDD8627EDE8520004B7CC /* GenerateChallenge.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B4DFDD8527EDE8520004B7CC /* GenerateChallenge.graphql */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		B4DFDD7427EDC4280004B7CC /* Apollo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apollo.swift; sourceTree = "<group>"; };
 		B4DFDD7C27EDD8880004B7CC /* schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = schema.json; path = metacomics/schema.json; sourceTree = SOURCE_ROOT; };
 		B4DFDD8327EDE1E50004B7CC /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = metacomics/API.swift; sourceTree = SOURCE_ROOT; };
+		B4DFDD8527EDE8520004B7CC /* GenerateChallenge.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = GenerateChallenge.graphql; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,7 +166,6 @@
 			isa = PBXGroup;
 			children = (
 				053DA54627EDDE3F0016EFD8 /* schema.json */,
-				053DA54327EDDDA50016EFD8 /* Ping.graphql */,
 				B4DFDD2E27EB026B0004B7CC /* AppDelegate.swift */,
 				B4DFDD3027EB026B0004B7CC /* SceneDelegate.swift */,
 				B4DFDD3727EB02710004B7CC /* Assets.xcassets */,
@@ -192,6 +193,8 @@
 		B4DFDD7327EDC1F50004B7CC /* Apollo */ = {
 			isa = PBXGroup;
 			children = (
+				053DA54327EDDDA50016EFD8 /* Ping.graphql */,
+				B4DFDD8527EDE8520004B7CC /* GenerateChallenge.graphql */,
 				B4DFDD8327EDE1E50004B7CC /* API.swift */,
 				B4DFDD7C27EDD8880004B7CC /* schema.json */,
 				B4DFDD7427EDC4280004B7CC /* Apollo.swift */,
@@ -274,6 +277,7 @@
 				B4DFDD3B27EB02710004B7CC /* LaunchScreen.storyboard in Resources */,
 				053DA54927EDDF240016EFD8 /* Ping.graphql in Resources */,
 				B4DFDD3827EB02710004B7CC /* Assets.xcassets in Resources */,
+				B4DFDD8627EDE8520004B7CC /* GenerateChallenge.graphql in Resources */,
 				B4DFDD5B27EB70630004B7CC /* Contract.json in Resources */,
 				053DA54827EDDE3F0016EFD8 /* schema.json in Resources */,
 				B4DFDD3627EB026B0004B7CC /* Main.storyboard in Resources */,

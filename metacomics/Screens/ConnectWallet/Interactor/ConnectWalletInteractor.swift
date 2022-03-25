@@ -65,6 +65,10 @@ class ConnectWalletInteractor {
         }
     }
     
+    func sign(message: String) {
+        walletConnect.sign(message: message)
+    }
+    
 }
 
 extension ConnectWalletInteractor: WalletConnectDelegate {
