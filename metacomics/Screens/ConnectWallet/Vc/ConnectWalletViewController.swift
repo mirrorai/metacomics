@@ -33,7 +33,7 @@ class ConnectWalletViewController: UIViewController {
                 }
             } receiveValue: { [weak self] walletId in
                 guard let self = self else { return }
-                self.showAlert("💵 Wallet ID", message: walletId)
+//                self.showAlert("💵 Wallet ID", message: walletId)
             }
     }
     
@@ -42,7 +42,8 @@ class ConnectWalletViewController: UIViewController {
         statusLabel.text = "🦆 Connected"
         activityIndicator.stopAnimating()
         
-        interactor.sign(message: "aaaa")
+//        interactor.sign(message: "aaaa")
+        interactor.login()
     }
     
     

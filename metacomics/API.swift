@@ -4,6 +4,38 @@
 import Apollo
 import Foundation
 
+/// The signed auth challenge
+public struct SignedAuthChallenge: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - address: The ethereum address you signed the signature with
+  ///   - signature: The signature
+  public init(address: String, signature: String) {
+    graphQLMap = ["address": address, "signature": signature]
+  }
+
+  /// The ethereum address you signed the signature with
+  public var address: String {
+    get {
+      return graphQLMap["address"] as! String
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "address")
+    }
+  }
+
+  /// The signature
+  public var signature: String {
+    get {
+      return graphQLMap["signature"] as! String
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "signature")
+    }
+  }
+}
+
 /// The challenge request
 public struct ChallengeRequest: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
@@ -21,6 +53,112 @@ public struct ChallengeRequest: GraphQLMapConvertible {
     }
     set {
       graphQLMap.updateValue(newValue, forKey: "address")
+    }
+  }
+}
+
+public final class AuthenticateMutation: GraphQLMutation {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    mutation Authenticate($request: SignedAuthChallenge!) {
+      authenticate(request: $request) {
+        __typename
+        accessToken
+        refreshToken
+      }
+    }
+    """
+
+  public let operationName: String = "Authenticate"
+
+  public var request: SignedAuthChallenge
+
+  public init(request: SignedAuthChallenge) {
+    self.request = request
+  }
+
+  public var variables: GraphQLMap? {
+    return ["request": request]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Mutation"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("authenticate", arguments: ["request": GraphQLVariable("request")], type: .nonNull(.object(Authenticate.selections))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(authenticate: Authenticate) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "authenticate": authenticate.resultMap])
+    }
+
+    public var authenticate: Authenticate {
+      get {
+        return Authenticate(unsafeResultMap: resultMap["authenticate"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "authenticate")
+      }
+    }
+
+    public struct Authenticate: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["AuthenticationResult"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("accessToken", type: .nonNull(.scalar(String.self))),
+          GraphQLField("refreshToken", type: .nonNull(.scalar(String.self))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(accessToken: String, refreshToken: String) {
+        self.init(unsafeResultMap: ["__typename": "AuthenticationResult", "accessToken": accessToken, "refreshToken": refreshToken])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// The access token
+      public var accessToken: String {
+        get {
+          return resultMap["accessToken"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "accessToken")
+        }
+      }
+
+      /// The refresh token
+      public var refreshToken: String {
+        get {
+          return resultMap["refreshToken"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "refreshToken")
+        }
+      }
     }
   }
 }

@@ -41,27 +41,31 @@ class WalletConnect {
         return wcUrl.absoluteString
     }
     
-    func sign(message: String) {
+    func sign(message: String, completion: @escaping (Swift.Result<String, Error>) -> Void) {
         do {
-//            try client.personal_sign(
-//                url: session.url,
-//                message: "Hi there!",
-//                account: session.walletInfo!.accounts[0]
-            try client.eth_sign(
+            try client.personal_sign(
                 url: session.url,
-                account: session.walletInfo!.accounts[0],
-                message: "Hi there!"
+                message: message,
+                account: session.walletInfo!.accounts[0]
             ) { response in
                 // handle the response from Wallet here
-                let url = response.url
-                print("Sign url: \(url)")
                 if let error = response.error {
                     print("Sign error: \(error)")
+                    completion(.failure(error))
+                    return
                 }
-                
+                do {
+                    let key = try response.result(as: String.self) // response.url.key
+                    print("Sign key: \(key)")
+                    completion(.success(key))
+                } catch {
+                    print("Sign error: \(error)")
+                    completion(.failure(error))
+                }
             }
         } catch {
-            print(error)
+            print("Sign error: \(error)")
+            completion(.failure(error))
         }
     }
 
