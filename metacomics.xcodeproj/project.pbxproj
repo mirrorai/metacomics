@@ -40,6 +40,8 @@
 		B4DFDD9227EE2BDE0004B7CC /* CreateProfile.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B4DFDD9127EE2BDE0004B7CC /* CreateProfile.graphql */; };
 		B4DFDD9427EE2DB10004B7CC /* HasTxHashBeenIndexed.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B4DFDD9327EE2DB10004B7CC /* HasTxHashBeenIndexed.graphql */; };
 		B4DFDD9627EE3E420004B7CC /* NSError+Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD9527EE3E420004B7CC /* NSError+Text.swift */; };
+		B4DFDD9927EE67A60004B7CC /* ProfileInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD9827EE67A60004B7CC /* ProfileInfo.swift */; };
+		B4DFDD9B27EE6FCC0004B7CC /* TransactionIndexedResultInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD9A27EE6FCC0004B7CC /* TransactionIndexedResultInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +76,8 @@
 		B4DFDD9127EE2BDE0004B7CC /* CreateProfile.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = CreateProfile.graphql; sourceTree = "<group>"; };
 		B4DFDD9327EE2DB10004B7CC /* HasTxHashBeenIndexed.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = HasTxHashBeenIndexed.graphql; sourceTree = "<group>"; };
 		B4DFDD9527EE3E420004B7CC /* NSError+Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Text.swift"; sourceTree = "<group>"; };
+		B4DFDD9827EE67A60004B7CC /* ProfileInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInfo.swift; sourceTree = "<group>"; };
+		B4DFDD9A27EE6FCC0004B7CC /* TransactionIndexedResultInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionIndexedResultInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +152,7 @@
 		B4DFDD5127EB11580004B7CC /* ConnectWallet */ = {
 			isa = PBXGroup;
 			children = (
+				B4DFDD9727EE677D0004B7CC /* Models */,
 				B4DFDD5227EB161C0004B7CC /* Interactor */,
 				B4DFDD5327EB16420004B7CC /* Vc */,
 			);
@@ -224,6 +229,15 @@
 				B4DFDD8927EE0C6B0004B7CC /* NetworkInterceptorProvider.swift */,
 			);
 			path = Apollo;
+			sourceTree = "<group>";
+		};
+		B4DFDD9727EE677D0004B7CC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B4DFDD9827EE67A60004B7CC /* ProfileInfo.swift */,
+				B4DFDD9A27EE6FCC0004B7CC /* TransactionIndexedResultInfo.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -340,11 +354,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4DFDD9927EE67A60004B7CC /* ProfileInfo.swift in Sources */,
 				B4DFDD3327EB026B0004B7CC /* ViewController.swift in Sources */,
 				B4DFDD2F27EB026B0004B7CC /* AppDelegate.swift in Sources */,
 				B4DFDD8A27EE0C6B0004B7CC /* NetworkInterceptorProvider.swift in Sources */,
 				B4DFDD5927EB66270004B7CC /* BigButtonViewController.swift in Sources */,
 				B4DFDD4C27EB0FBE0004B7CC /* Aliases.swift in Sources */,
+				B4DFDD9B27EE6FCC0004B7CC /* TransactionIndexedResultInfo.swift in Sources */,
 				B4DFDD4E27EB10880004B7CC /* WalletConnect.swift in Sources */,
 				B4DFDD4627EB0EDF0004B7CC /* ConnectWalletInteractor.swift in Sources */,
 				B4DFDD4427EB06C90004B7CC /* ConnectWalletViewController.swift in Sources */,

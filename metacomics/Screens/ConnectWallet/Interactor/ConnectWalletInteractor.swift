@@ -145,7 +145,7 @@ class ConnectWalletInteractor {
         }
     }
     
-    func getProfiles(completion: @escaping (Swift.Result<[Any], Error>) -> Void) {
+    func getProfiles(completion: @escaping (Swift.Result<[ProfileItemInfo], Error>) -> Void) {
         guard let wallet = walletAddress else { return }
         let request = ProfileQueryRequest(
             limit: nil,
@@ -161,9 +161,16 @@ class ConnectWalletInteractor {
             case .success(let graphQLResult):
                 print("Success! Result: \(graphQLResult)")
                 guard let items = graphQLResult.data?.profiles.items else { return }
-                print(items)
-                self.onMainThread {
-                    completion(.success(items))
+                let json = items.map { $0.resultMap }
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: json, options: [])
+                    let profiles = try JSONDecoder().decode([ProfileItemInfo].self, from: data )
+                    self.onMainThread {
+                        completion(.success(profiles))
+                    }
+                } catch {
+                    print("Failure! Error: \(error)")
+                    completion(.failure(.getProfilesError))
                 }
             case .failure(let error):
                 print("Failure! Error: \(error)")
@@ -221,7 +228,7 @@ class ConnectWalletInteractor {
         }
     }
     
-    private func hasTxBeenIndexed(txHash: String, completion: @escaping (Swift.Result<(String, String), Error>) -> Void) {
+    private func hasTxBeenIndexed(txHash: String, completion: @escaping (Swift.Result<String, Error>) -> Void) {
         let request = HasTxHashBeenIndexedRequest(txHash: txHash)
         let query = HasTxHashBeenIndexedQuery(request: request)
         ApolloNetwork.shared.client.fetch(query: query) { result in
@@ -235,28 +242,41 @@ class ConnectWalletInteractor {
                 else { return }
                 print(hasTxHashBeenIndexed)
                 
+                let topicId = "ProfileCreated(uint256,address,address,string,string,address,bytes,string,uint256)"
                 if let metadataStatus = hasTxHashBeenIndexed.asTransactionIndexedResult?.metadataStatus {
-                    if metadataStatus.status.rawValue == "SUCCESS" {
-                        completion(.success(("data", "logs")))
+                    if metadataStatus.status == .success {
+                        let profileCreatedLog = hasTxHashBeenIndexed
+                            .asTransactionIndexedResult?
+                            .txReceipt?
+                            .logs
+                            .first { $0.topics[0] == topicId }
+                        profileCreatedLog?.topics[1]
+                        self.onMainThread {
+                            completion(.success("profileId"))
+                        }
                         return
                     }
-                    if metadataStatus.status.rawValue == "METADATA_VALIDATION_FAILED" {
+                    if metadataStatus.status == .metadataValidationFailed {
                         completion(.failure(.textError(description: metadataStatus.reason ?? "")))
                         return
                     }
                 } else {
                     if hasTxHashBeenIndexed.asTransactionIndexedResult?.indexed == true {
-                        completion(.success(("data", "logs")))
+                        let profileCreatedLog = hasTxHashBeenIndexed
+                            .asTransactionIndexedResult?
+                            .txReceipt?
+                            .logs
+                            .first { $0.topics[0] == topicId }
+                        profileCreatedLog?.topics[1]
+                        self.onMainThread {
+                            completion(.success("profileId"))
+                        }
                        return
                     }
                 }
-                do {
-                    sleep(1)
+                DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                    self.hasTxBeenIndexed(txHash: txHash, completion: completion)
                 }
-                self.hasTxBeenIndexed(txHash: txHash, completion: completion)
-//                self.onMainThread {
-//                    completion(.success(items))
-//                }
             case .failure(let error):
                 print("Failure! Error: \(error)")
                 completion(.failure(.getProfilesError))
