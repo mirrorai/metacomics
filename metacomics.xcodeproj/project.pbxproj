@@ -456,7 +456,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G47TE797N3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = metacomics/Info.plist;
+				INFOPLIST_FILE = metacomics/Config/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -484,7 +484,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G47TE797N3;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = metacomics/Info.plist;
+				INFOPLIST_FILE = metacomics/Config/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
