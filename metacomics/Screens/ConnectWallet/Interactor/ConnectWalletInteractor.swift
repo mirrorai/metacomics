@@ -7,6 +7,7 @@ class ConnectWalletInteractor {
     
     enum Error: Swift.Error {
         case connectionError
+        case authError
     }
     
     let walletConnectionSubject = PassthroughSubject<String, Error>()
@@ -22,7 +23,6 @@ class ConnectWalletInteractor {
     init() {
         walletConnect = WalletConnect(delegate: self)
         walletConnect.reconnectIfNeeded()
-//        walletAddress = "0x58Ae6515A2d8464cbDb3d68ff3a5B1B4c774e9e2"
     }
     
     func onMainThread(_ closure: @escaping () -> Void) {
@@ -79,8 +79,10 @@ class ConnectWalletInteractor {
             guard let text = try? result.get() else { return }
             self.walletConnect.sign(message: text) { signResult in
                 guard let key = try? signResult.get() else { return }
-                self.authenticate(address: wallet, signature: key) { result in
-                    
+                self.authenticate(address: wallet, signature: key) { authResult in
+                    guard let accessToken = try? authResult.get() else { return }
+                    let key = UserDefaults.DefaultsKeys.authenticateAccessToken.rawValue
+                    UserDefaults.standard.set(accessToken, forKey: key)
                 }
             }
         }
@@ -95,17 +97,17 @@ class ConnectWalletInteractor {
             switch result {
             case .success(let graphQLResult):
                 print("Success! Result: \(graphQLResult)")
-                guard let data = graphQLResult.data else { return }
-                print(data)
-//                self.onMainThread {
-//                    completion(.success(text))
-//                }
+                guard let accessToken = graphQLResult.data?.authenticate.accessToken else { return }
+                print(accessToken)
+                self.onMainThread {
+                    completion(.success(accessToken))
+                }
             case .failure(let error):
                 print("Failure! Error: \(error)")
-//                completion(.failure(error as! Apollo.ResponseCodeInterceptor.ResponseCodeError))
-                if case let .invalidResponseCode(response, rawData) = (error as! Apollo.ResponseCodeInterceptor.ResponseCodeError), let data = rawData {
-                    print(String(data: data, encoding: .utf8))
-                }
+                completion(.failure(.authError))
+//                if case let .invalidResponseCode(response, rawData) = (error as! Apollo.ResponseCodeInterceptor.ResponseCodeError), let data = rawData {
+//                    print(String(data: data, encoding: .utf8))
+//                }
             }
         }
     }

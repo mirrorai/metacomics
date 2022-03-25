@@ -35,6 +35,7 @@
 		B4DFDD8827EE0B8C0004B7CC /* ApolloAddingInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD8727EE0B8C0004B7CC /* ApolloAddingInterceptor.swift */; };
 		B4DFDD8A27EE0C6B0004B7CC /* NetworkInterceptorProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD8927EE0C6B0004B7CC /* NetworkInterceptorProvider.swift */; };
 		B4DFDD8C27EE16C10004B7CC /* Authenticate.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B4DFDD8B27EE16C10004B7CC /* Authenticate.graphql */; };
+		B4DFDD8E27EE24F30004B7CC /* UserDefaults+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD8D27EE24F30004B7CC /* UserDefaults+Keys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		B4DFDD8727EE0B8C0004B7CC /* ApolloAddingInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApolloAddingInterceptor.swift; sourceTree = "<group>"; };
 		B4DFDD8927EE0C6B0004B7CC /* NetworkInterceptorProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkInterceptorProvider.swift; sourceTree = "<group>"; };
 		B4DFDD8B27EE16C10004B7CC /* Authenticate.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Authenticate.graphql; sourceTree = "<group>"; };
+		B4DFDD8D27EE24F30004B7CC /* UserDefaults+Keys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Keys.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 			children = (
 				B4DFDD4B27EB0FBE0004B7CC /* Aliases.swift */,
 				B4DFDD4F27EB11440004B7CC /* UIViewController+Alert.swift */,
+				B4DFDD8D27EE24F30004B7CC /* UserDefaults+Keys.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				B4DFDD6327EC5A180004B7CC /* SelectTokensViewController.swift in Sources */,
 				B4DFDD5027EB11440004B7CC /* UIViewController+Alert.swift in Sources */,
 				B4DFDD8827EE0B8C0004B7CC /* ApolloAddingInterceptor.swift in Sources */,
+				B4DFDD8E27EE24F30004B7CC /* UserDefaults+Keys.swift in Sources */,
 				053DA54B27EDDFE40016EFD8 /* API.swift in Sources */,
 				B4DFDD7527EDC4280004B7CC /* ApolloNetwork.swift in Sources */,
 			);

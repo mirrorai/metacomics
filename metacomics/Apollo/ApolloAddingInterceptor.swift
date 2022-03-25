@@ -8,12 +8,15 @@ class TokenAddingInterceptor: ApolloInterceptor {
         response: HTTPResponse<Operation>?,
         completion: @escaping (Result<GraphQLResult<Operation.Data>, Error>) -> Void) {
 
-            if let token = UserDefaults.standard.string(forKey: "auth_token") {
+            let key = UserDefaults.DefaultsKeys.authenticateAccessToken.rawValue
+            if let token = UserDefaults.standard.string(forKey: key) {
                 request.addHeader(name: "x-access-token", value: "Bearer \(token)")
             } // else do nothing
 
-            chain.proceedAsync(request: request,
-                               response: response,
-                               completion: completion)
+            chain.proceedAsync(
+                request: request,
+                response: response,
+                completion: completion
+            )
     }
 }

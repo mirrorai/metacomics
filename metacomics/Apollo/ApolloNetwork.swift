@@ -15,9 +15,4 @@ class ApolloNetwork {
             return ApolloClient(networkTransport: transport, store: store)
         }()
     
-    init() {
-      
-    }
-    
-    
 }
