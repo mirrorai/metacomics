@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		053DA54827EDDE3F0016EFD8 /* schema.json in Resources */ = {isa = PBXBuildFile; fileRef = 053DA54627EDDE3F0016EFD8 /* schema.json */; };
+		053DA54927EDDF240016EFD8 /* Ping.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 053DA54327EDDDA50016EFD8 /* Ping.graphql */; };
+		053DA54B27EDDFE40016EFD8 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053DA54A27EDDFE40016EFD8 /* API.swift */; };
 		B4DFDD2F27EB026B0004B7CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD2E27EB026B0004B7CC /* AppDelegate.swift */; };
 		B4DFDD3127EB026B0004B7CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD3027EB026B0004B7CC /* SceneDelegate.swift */; };
 		B4DFDD3327EB026B0004B7CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD3227EB026B0004B7CC /* ViewController.swift */; };
@@ -28,10 +31,12 @@
 		B4DFDD6A27ECAC7F0004B7CC /* ApolloUtils in Frameworks */ = {isa = PBXBuildFile; productRef = B4DFDD6927ECAC7F0004B7CC /* ApolloUtils */; };
 		B4DFDD6C27ECAC7F0004B7CC /* ApolloWebSocket in Frameworks */ = {isa = PBXBuildFile; productRef = B4DFDD6B27ECAC7F0004B7CC /* ApolloWebSocket */; };
 		B4DFDD7527EDC4280004B7CC /* Apollo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD7427EDC4280004B7CC /* Apollo.swift */; };
-		B4DFDD8427EDE1E50004B7CC /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD8327EDE1E50004B7CC /* API.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		053DA54327EDDDA50016EFD8 /* Ping.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Ping.graphql; sourceTree = "<group>"; };
+		053DA54627EDDE3F0016EFD8 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
+		053DA54A27EDDFE40016EFD8 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		B4DFDD2B27EB026B0004B7CC /* metacomics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = metacomics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4DFDD2E27EB026B0004B7CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4DFDD3027EB026B0004B7CC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,10 +55,6 @@
 		B4DFDD6227EC5A180004B7CC /* SelectTokensViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTokensViewController.swift; sourceTree = "<group>"; };
 		B4DFDD7427EDC4280004B7CC /* Apollo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apollo.swift; sourceTree = "<group>"; };
 		B4DFDD7C27EDD8880004B7CC /* schema.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = schema.json; path = metacomics/schema.json; sourceTree = SOURCE_ROOT; };
-		B4DFDD7E27EDDA550004B7CC /* ConferenceDetailsViewController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ConferenceDetailsViewController.graphql; sourceTree = "<group>"; };
-		B4DFDD7F27EDDA550004B7CC /* RegisterViewController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = RegisterViewController.graphql; sourceTree = "<group>"; };
-		B4DFDD8027EDDA550004B7CC /* ConferencesTableViewController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = ConferencesTableViewController.graphql; sourceTree = "<group>"; };
-		B4DFDD8127EDDA550004B7CC /* AddConferenceViewController.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = AddConferenceViewController.graphql; sourceTree = "<group>"; };
 		B4DFDD8327EDE1E50004B7CC /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = metacomics/API.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -93,6 +94,7 @@
 		B4DFDD2D27EB026B0004B7CC /* metacomics */ = {
 			isa = PBXGroup;
 			children = (
+				053DA54A27EDDFE40016EFD8 /* API.swift */,
 				B4DFDD7327EDC1F50004B7CC /* Apollo */,
 				B4DFDD5F27EC59360004B7CC /* Config */,
 				B4DFDD4A27EB0FB60004B7CC /* Core */,
@@ -161,6 +163,8 @@
 		B4DFDD5F27EC59360004B7CC /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				053DA54627EDDE3F0016EFD8 /* schema.json */,
+				053DA54327EDDDA50016EFD8 /* Ping.graphql */,
 				B4DFDD2E27EB026B0004B7CC /* AppDelegate.swift */,
 				B4DFDD3027EB026B0004B7CC /* SceneDelegate.swift */,
 				B4DFDD3727EB02710004B7CC /* Assets.xcassets */,
@@ -189,10 +193,6 @@
 			isa = PBXGroup;
 			children = (
 				B4DFDD8327EDE1E50004B7CC /* API.swift */,
-				B4DFDD8127EDDA550004B7CC /* AddConferenceViewController.graphql */,
-				B4DFDD7E27EDDA550004B7CC /* ConferenceDetailsViewController.graphql */,
-				B4DFDD8027EDDA550004B7CC /* ConferencesTableViewController.graphql */,
-				B4DFDD7F27EDDA550004B7CC /* RegisterViewController.graphql */,
 				B4DFDD7C27EDD8880004B7CC /* schema.json */,
 				B4DFDD7427EDC4280004B7CC /* Apollo.swift */,
 			);
@@ -272,8 +272,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4DFDD3B27EB02710004B7CC /* LaunchScreen.storyboard in Resources */,
+				053DA54927EDDF240016EFD8 /* Ping.graphql in Resources */,
 				B4DFDD3827EB02710004B7CC /* Assets.xcassets in Resources */,
 				B4DFDD5B27EB70630004B7CC /* Contract.json in Resources */,
+				053DA54827EDDE3F0016EFD8 /* schema.json in Resources */,
 				B4DFDD3627EB026B0004B7CC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -297,7 +299,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Don't run this during index builds\nif [ $ACTION = \"indexbuild\" ]; then exit 0; fi\n\n# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"schema.graphql\" API.swift\n";
+			shellScript = "# Type# Don't run this during index builds\nif [ $ACTION = \"indexbuild\" ]; then exit 0; fi\n\n# Go to the build root and search up the chain to find the Derived Data Path where the source packages are checked out.\nDERIVED_DATA_CANDIDATE=\"${BUILD_ROOT}\"\n\nwhile ! [ -d \"${DERIVED_DATA_CANDIDATE}/SourcePackages\" ]; do\n  if [ \"${DERIVED_DATA_CANDIDATE}\" = / ]; then\n    echo >&2 \"error: Unable to locate SourcePackages directory from BUILD_ROOT: '${BUILD_ROOT}'\"\n    exit 1\n  fi\n\n  DERIVED_DATA_CANDIDATE=\"$(dirname \"${DERIVED_DATA_CANDIDATE}\")\"\ndone\n\n# Grab a reference to the directory where scripts are checked out\nSCRIPT_PATH=\"${DERIVED_DATA_CANDIDATE}/SourcePackages/checkouts/apollo-ios/scripts\"\n\nif [ -z \"${SCRIPT_PATH}\" ]; then\n    echo >&2 \"error: Couldn't find the CLI script in your checked out SPM packages; make sure to add the framework to your project.\"\n    exit 1\nfi\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\n#\"${SCRIPT_PATH}\"/run-bundled-codegen.sh schema:download --endpoint=\"https://api-mumbai.lens.dev/\"\n\ncd \"${SRCROOT}/${TARGET_NAME}\"\n\"${SCRIPT_PATH}\"/run-bundled-codegen.sh codegen:generate --target=swift --includes=./**/*.graphql --localSchemaFile=\"schema.json\" API.swift\n\n \n# a script or drag a script file from your workspace to insert its path.\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -316,7 +318,7 @@
 				B4DFDD3127EB026B0004B7CC /* SceneDelegate.swift in Sources */,
 				B4DFDD6327EC5A180004B7CC /* SelectTokensViewController.swift in Sources */,
 				B4DFDD5027EB11440004B7CC /* UIViewController+Alert.swift in Sources */,
-				B4DFDD8427EDE1E50004B7CC /* API.swift in Sources */,
+				053DA54B27EDDFE40016EFD8 /* API.swift in Sources */,
 				B4DFDD7527EDC4280004B7CC /* Apollo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

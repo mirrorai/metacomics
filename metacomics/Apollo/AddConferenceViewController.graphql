@@ -1,5 +1,0 @@
-mutation CreateConference($name: String!, $city: String!, $year: String!) {
-  createConference(name: $name, city: $city, year: $year) {
-    ...ConferenceDetails
-  }
-}
