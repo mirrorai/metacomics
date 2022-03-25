@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        Apollo.shared.client .fetch(query: PingQuery()) { result in
+        Apollo.shared.client.fetch(query: GetChallengeQuery(request: ChallengeRequest(address: "0xD43236cA92602c9538C5948B9Bc25163cAE0869F"))) { result in
           switch result {
           case .success(let graphQLResult):
             print("Success! Result: \(graphQLResult)")
