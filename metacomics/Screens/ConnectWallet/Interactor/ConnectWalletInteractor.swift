@@ -73,6 +73,7 @@ class ConnectWalletInteractor {
     }
     
     func sign(message: String) {
+//        print("sign")
 //        walletConnect.sign(message: message)
     }
     
@@ -287,6 +288,34 @@ class ConnectWalletInteractor {
 //    private func pollUntilIndexed(txHash: String, completion: @escaping (Swift.Result<Bool, Error>) -> Void) {
 //        hasTxBeenIndexed(txHash: txHash, completion: <#T##(Result<Bool, Error>) -> Void#>)
 //    }
+
+
+    func getFollowers(profileId: String, completion: @escaping (Swift.Result<[ProfileItemInfo], Error>) -> Void) {
+        guard let wallet = walletAddress else { return }
+        let request = FollowersRequest(profileId: profileId)
+        let query = GetFollowersQuery(request: request)
+        ApolloNetwork.shared.client.fetch(query: query) { result in
+            switch result {
+            case .success(let graphQLResult):
+                print("Success! Result: \(graphQLResult)")
+                guard let items = graphQLResult.data?.followers.items else { return }
+                let json = items.map { $0.resultMap }
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: json, options: [])
+                    let profiles = try JSONDecoder().decode([ProfileItemInfo].self, from: data )
+                    self.onMainThread {
+                        completion(.success(profiles))
+                    }
+                } catch {
+                    print("Failure! Error: \(error)")
+                    completion(.failure(.getProfilesError))
+                }
+            case .failure(let error):
+                print("Failure! Error: \(error)")
+                completion(.failure(.getProfilesError))
+            }
+        }
+    }
     
 }
 

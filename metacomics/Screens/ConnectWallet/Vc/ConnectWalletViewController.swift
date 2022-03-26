@@ -33,7 +33,7 @@ class ConnectWalletViewController: UIViewController {
                 }
             } receiveValue: { [weak self] walletId in
                 guard let self = self else { return }
-//                self.showAlert("💵 Wallet ID", message: walletId)
+                //                self.showAlert("💵 Wallet ID", message: walletId)
             }
     }
     
@@ -42,21 +42,33 @@ class ConnectWalletViewController: UIViewController {
         statusLabel.text = "🦆 Connected"
         activityIndicator.stopAnimating()
         
-//        interactor.sign(message: "aaaa")
+        //        interactor.sign(message: "aaaa")
         
         // CLEAN UP ACCESS TOKEN
-//        let key = UserDefaults.DefaultsKeys.authenticateAccessToken.rawValue
-//        UserDefaults.standard.set(nil, forKey: key)
+        //        let key = UserDefaults.DefaultsKeys.authenticateAccessToken.rawValue
+        //        UserDefaults.standard.set(nil, forKey: key)
         
         interactor.login() { _ in
             self.interactor.getProfiles { result in
+                print("=== GET_PROFILES ===")
                 guard let profiles = try? result.get() else { return }
                 print(profiles)
+
+                if let profile = profiles.first {
+                    self.interactor.getFollowers(profileId: profile.id) { result in
+                        print("=== FOLLOWERS ===")
+                        guard let value = try? result.get() else { return }
+                        print(value)
+                    }
+                }
+
             }
-//            self.interactor.addProfile(username: "testuser4") { result in
-//                guard let value = try? result.get() else { return }
-//
-//            }
+
+            //            self.interactor.addProfile(username: "testuser4") { result in
+            //                guard let value = try? result.get() else { return }
+            //            }
+
+
         }
     }
     
@@ -66,17 +78,17 @@ class ConnectWalletViewController: UIViewController {
     @IBAction func connect() {
         activityIndicator.startAnimating()
         connectWalletButton.isEnabled = false
-//        interactor.connectWallet(
-//            onSuccess: { [weak self] walletId in
-//                guard let self = self else { return }
-//                self.next()
-//            },
-//            onError: { [weak self] in
-//                guard let self = self else { return }
-//                self.connectWalletButton.isEnabled = true
-//                self.showAlert("🧦 Error", message: "Please try again!")
-//            }
-//        )
+        //        interactor.connectWallet(
+        //            onSuccess: { [weak self] walletId in
+        //                guard let self = self else { return }
+        //                self.next()
+        //            },
+        //            onError: { [weak self] in
+        //                guard let self = self else { return }
+        //                self.connectWalletButton.isEnabled = true
+        //                self.showAlert("🧦 Error", message: "Please try again!")
+        //            }
+        //        )
         interactor.connectWalletWithPublisher()
     }
 
