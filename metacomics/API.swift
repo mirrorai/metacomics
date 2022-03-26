@@ -232,6 +232,94 @@ public enum RelayErrorReasons: RawRepresentable, Equatable, Hashable, CaseIterab
   }
 }
 
+public struct FollowRequest: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - follow
+  public init(follow: [Follow]) {
+    graphQLMap = ["follow": follow]
+  }
+
+  public var follow: [Follow] {
+    get {
+      return graphQLMap["follow"] as! [Follow]
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "follow")
+    }
+  }
+}
+
+public struct Follow: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - profile
+  ///   - followModule
+  public init(profile: String, followModule: Swift.Optional<FollowModuleRedeemParams?> = nil) {
+    graphQLMap = ["profile": profile, "followModule": followModule]
+  }
+
+  public var profile: String {
+    get {
+      return graphQLMap["profile"] as! String
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "profile")
+    }
+  }
+
+  public var followModule: Swift.Optional<FollowModuleRedeemParams?> {
+    get {
+      return graphQLMap["followModule"] as? Swift.Optional<FollowModuleRedeemParams?> ?? Swift.Optional<FollowModuleRedeemParams?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "followModule")
+    }
+  }
+}
+
+public struct FollowModuleRedeemParams: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - feeFollowModule: The follower fee follower module
+  public init(feeFollowModule: Swift.Optional<FeeFollowModuleRedeemParams?> = nil) {
+    graphQLMap = ["feeFollowModule": feeFollowModule]
+  }
+
+  /// The follower fee follower module
+  public var feeFollowModule: Swift.Optional<FeeFollowModuleRedeemParams?> {
+    get {
+      return graphQLMap["feeFollowModule"] as? Swift.Optional<FeeFollowModuleRedeemParams?> ?? Swift.Optional<FeeFollowModuleRedeemParams?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "feeFollowModule")
+    }
+  }
+}
+
+public struct FeeFollowModuleRedeemParams: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - amount: The expected amount to pay
+  public init(amount: ModuleFeeAmountParams) {
+    graphQLMap = ["amount": amount]
+  }
+
+  /// The expected amount to pay
+  public var amount: ModuleFeeAmountParams {
+    get {
+      return graphQLMap["amount"] as! ModuleFeeAmountParams
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "amount")
+    }
+  }
+}
+
 /// The challenge request
 public struct ChallengeRequest: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
@@ -803,6 +891,442 @@ public final class CreateProfileMutation: GraphQLMutation {
           }
           set {
             resultMap.updateValue(newValue, forKey: "reason")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class FollowMutation: GraphQLMutation {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    mutation Follow($request: FollowRequest!) {
+      createFollowTypedData(request: $request) {
+        __typename
+        id
+        expiresAt
+        typedData {
+          __typename
+          domain {
+            __typename
+            name
+            chainId
+            version
+            verifyingContract
+          }
+          types {
+            __typename
+            FollowWithSig {
+              __typename
+              name
+              type
+            }
+          }
+          value {
+            __typename
+            nonce
+            deadline
+            profileIds
+            datas
+          }
+        }
+      }
+    }
+    """
+
+  public let operationName: String = "Follow"
+
+  public var request: FollowRequest
+
+  public init(request: FollowRequest) {
+    self.request = request
+  }
+
+  public var variables: GraphQLMap? {
+    return ["request": request]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Mutation"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("createFollowTypedData", arguments: ["request": GraphQLVariable("request")], type: .nonNull(.object(CreateFollowTypedDatum.selections))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(createFollowTypedData: CreateFollowTypedDatum) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "createFollowTypedData": createFollowTypedData.resultMap])
+    }
+
+    public var createFollowTypedData: CreateFollowTypedDatum {
+      get {
+        return CreateFollowTypedDatum(unsafeResultMap: resultMap["createFollowTypedData"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "createFollowTypedData")
+      }
+    }
+
+    public struct CreateFollowTypedDatum: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["CreateFollowBroadcastItemResult"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(String.self))),
+          GraphQLField("expiresAt", type: .nonNull(.scalar(String.self))),
+          GraphQLField("typedData", type: .nonNull(.object(TypedDatum.selections))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: String, expiresAt: String, typedData: TypedDatum) {
+        self.init(unsafeResultMap: ["__typename": "CreateFollowBroadcastItemResult", "id": id, "expiresAt": expiresAt, "typedData": typedData.resultMap])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// This broadcast item ID
+      public var id: String {
+        get {
+          return resultMap["id"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// The date the broadcast item expiries
+      public var expiresAt: String {
+        get {
+          return resultMap["expiresAt"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "expiresAt")
+        }
+      }
+
+      /// The typed data
+      public var typedData: TypedDatum {
+        get {
+          return TypedDatum(unsafeResultMap: resultMap["typedData"]! as! ResultMap)
+        }
+        set {
+          resultMap.updateValue(newValue.resultMap, forKey: "typedData")
+        }
+      }
+
+      public struct TypedDatum: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["CreateFollowEIP712TypedData"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("domain", type: .nonNull(.object(Domain.selections))),
+            GraphQLField("types", type: .nonNull(.object(`Type`.selections))),
+            GraphQLField("value", type: .nonNull(.object(Value.selections))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(domain: Domain, types: `Type`, value: Value) {
+          self.init(unsafeResultMap: ["__typename": "CreateFollowEIP712TypedData", "domain": domain.resultMap, "types": types.resultMap, "value": value.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// The typed data domain
+        public var domain: Domain {
+          get {
+            return Domain(unsafeResultMap: resultMap["domain"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "domain")
+          }
+        }
+
+        /// The types
+        public var types: `Type` {
+          get {
+            return `Type`(unsafeResultMap: resultMap["types"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "types")
+          }
+        }
+
+        /// The values
+        public var value: Value {
+          get {
+            return Value(unsafeResultMap: resultMap["value"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "value")
+          }
+        }
+
+        public struct Domain: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["EIP712TypedDataDomain"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("name", type: .nonNull(.scalar(String.self))),
+              GraphQLField("chainId", type: .nonNull(.scalar(String.self))),
+              GraphQLField("version", type: .nonNull(.scalar(String.self))),
+              GraphQLField("verifyingContract", type: .nonNull(.scalar(String.self))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(name: String, chainId: String, version: String, verifyingContract: String) {
+            self.init(unsafeResultMap: ["__typename": "EIP712TypedDataDomain", "name": name, "chainId": chainId, "version": version, "verifyingContract": verifyingContract])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// The name of the typed data domain
+          public var name: String {
+            get {
+              return resultMap["name"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "name")
+            }
+          }
+
+          /// The chainId
+          public var chainId: String {
+            get {
+              return resultMap["chainId"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "chainId")
+            }
+          }
+
+          /// The version
+          public var version: String {
+            get {
+              return resultMap["version"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "version")
+            }
+          }
+
+          /// The verifying contract
+          public var verifyingContract: String {
+            get {
+              return resultMap["verifyingContract"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "verifyingContract")
+            }
+          }
+        }
+
+        public struct `Type`: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["CreateFollowEIP712TypedDataTypes"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("FollowWithSig", type: .nonNull(.list(.nonNull(.object(FollowWithSig.selections))))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(followWithSig: [FollowWithSig]) {
+            self.init(unsafeResultMap: ["__typename": "CreateFollowEIP712TypedDataTypes", "FollowWithSig": followWithSig.map { (value: FollowWithSig) -> ResultMap in value.resultMap }])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var followWithSig: [FollowWithSig] {
+            get {
+              return (resultMap["FollowWithSig"] as! [ResultMap]).map { (value: ResultMap) -> FollowWithSig in FollowWithSig(unsafeResultMap: value) }
+            }
+            set {
+              resultMap.updateValue(newValue.map { (value: FollowWithSig) -> ResultMap in value.resultMap }, forKey: "FollowWithSig")
+            }
+          }
+
+          public struct FollowWithSig: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["EIP712TypedDataField"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("name", type: .nonNull(.scalar(String.self))),
+                GraphQLField("type", type: .nonNull(.scalar(String.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(name: String, type: String) {
+              self.init(unsafeResultMap: ["__typename": "EIP712TypedDataField", "name": name, "type": type])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// The name of the typed data field
+            public var name: String {
+              get {
+                return resultMap["name"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "name")
+              }
+            }
+
+            /// The type of the typed data field
+            public var type: String {
+              get {
+                return resultMap["type"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "type")
+              }
+            }
+          }
+        }
+
+        public struct Value: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["CreateFollowEIP712TypedDataValue"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("nonce", type: .nonNull(.scalar(String.self))),
+              GraphQLField("deadline", type: .nonNull(.scalar(String.self))),
+              GraphQLField("profileIds", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+              GraphQLField("datas", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(nonce: String, deadline: String, profileIds: [String], datas: [String]) {
+            self.init(unsafeResultMap: ["__typename": "CreateFollowEIP712TypedDataValue", "nonce": nonce, "deadline": deadline, "profileIds": profileIds, "datas": datas])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var nonce: String {
+            get {
+              return resultMap["nonce"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "nonce")
+            }
+          }
+
+          public var deadline: String {
+            get {
+              return resultMap["deadline"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "deadline")
+            }
+          }
+
+          public var profileIds: [String] {
+            get {
+              return resultMap["profileIds"]! as! [String]
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "profileIds")
+            }
+          }
+
+          public var datas: [String] {
+            get {
+              return resultMap["datas"]! as! [String]
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "datas")
+            }
           }
         }
       }

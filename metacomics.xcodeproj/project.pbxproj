@@ -11,6 +11,7 @@
 		053DA54927EDDF240016EFD8 /* Ping.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 053DA54327EDDDA50016EFD8 /* Ping.graphql */; };
 		053DA54B27EDDFE40016EFD8 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 053DA54A27EDDFE40016EFD8 /* API.swift */; };
 		05CC874827EEE9E300874C18 /* GetFollowers.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 05CC874727EEE9E300874C18 /* GetFollowers.graphql */; };
+		05CC874A27EEEF4800874C18 /* Follow.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 05CC874927EEEF4800874C18 /* Follow.graphql */; };
 		B4DFDD2F27EB026B0004B7CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD2E27EB026B0004B7CC /* AppDelegate.swift */; };
 		B4DFDD3127EB026B0004B7CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD3027EB026B0004B7CC /* SceneDelegate.swift */; };
 		B4DFDD3327EB026B0004B7CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD3227EB026B0004B7CC /* ViewController.swift */; };
@@ -50,6 +51,7 @@
 		053DA54627EDDE3F0016EFD8 /* schema.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = schema.json; sourceTree = "<group>"; };
 		053DA54A27EDDFE40016EFD8 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		05CC874727EEE9E300874C18 /* GetFollowers.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = GetFollowers.graphql; sourceTree = "<group>"; };
+		05CC874927EEEF4800874C18 /* Follow.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Follow.graphql; sourceTree = "<group>"; };
 		B4DFDD2B27EB026B0004B7CC /* metacomics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = metacomics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4DFDD2E27EB026B0004B7CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4DFDD3027EB026B0004B7CC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 			children = (
 				053DA54327EDDDA50016EFD8 /* Ping.graphql */,
 				05CC874727EEE9E300874C18 /* GetFollowers.graphql */,
+				05CC874927EEEF4800874C18 /* Follow.graphql */,
 				B4DFDD8527EDE8520004B7CC /* GenerateChallenge.graphql */,
 				B4DFDD8B27EE16C10004B7CC /* Authenticate.graphql */,
 				B4DFDD8F27EE27B80004B7CC /* GetProfiles.graphql */,
@@ -319,6 +322,7 @@
 				B4DFDD9227EE2BDE0004B7CC /* CreateProfile.graphql in Resources */,
 				053DA54927EDDF240016EFD8 /* Ping.graphql in Resources */,
 				B4DFDD3827EB02710004B7CC /* Assets.xcassets in Resources */,
+				05CC874A27EEEF4800874C18 /* Follow.graphql in Resources */,
 				B4DFDD8C27EE16C10004B7CC /* Authenticate.graphql in Resources */,
 				05CC874827EEE9E300874C18 /* GetFollowers.graphql in Resources */,
 				B4DFDD9027EE27B80004B7CC /* GetProfiles.graphql in Resources */,
