@@ -90,7 +90,7 @@ class ConnectWalletViewController: UIViewController {
                         else { return }
                         selectTokenVc.profile = profile
                         selectTokenVc.friends = followings
-                        self.navigationController?.pushViewController(selectTokenVc, animated: true)
+                        self.navigationController?.setViewControllers([selectTokenVc], animated: true)
                     }
                 }
                 
