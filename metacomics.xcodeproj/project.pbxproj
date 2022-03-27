@@ -13,6 +13,12 @@
 		05CC874827EEE9E300874C18 /* GetFollowers.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 05CC874727EEE9E300874C18 /* GetFollowers.graphql */; };
 		05CC874A27EEEF4800874C18 /* Follow.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 05CC874927EEEF4800874C18 /* Follow.graphql */; };
 		B48FCFEA27F0638200D31DA4 /* GetFollowing.graphql in Resources */ = {isa = PBXBuildFile; fileRef = B48FCFE927F0638200D31DA4 /* GetFollowing.graphql */; };
+		B48FCFEC27F08F9900D31DA4 /* GradientControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48FCFEB27F08F9900D31DA4 /* GradientControl.swift */; };
+		B48FCFEF27F094C700D31DA4 /* ConstructorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48FCFEE27F094C700D31DA4 /* ConstructorViewController.swift */; };
+		B48FCFF127F0975800D31DA4 /* UIImageView+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48FCFF027F0975800D31DA4 /* UIImageView+Gif.swift */; };
+		B48FCFF327F0977200D31DA4 /* box1.gif in Resources */ = {isa = PBXBuildFile; fileRef = B48FCFF227F0977200D31DA4 /* box1.gif */; };
+		B48FCFF627F098B900D31DA4 /* SwiftyGif in Frameworks */ = {isa = PBXBuildFile; productRef = B48FCFF527F098B900D31DA4 /* SwiftyGif */; };
+		B48FCFF927F0A4A500D31DA4 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48FCFF827F0A4A500D31DA4 /* PreviewViewController.swift */; };
 		B4DFDD2F27EB026B0004B7CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD2E27EB026B0004B7CC /* AppDelegate.swift */; };
 		B4DFDD3127EB026B0004B7CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD3027EB026B0004B7CC /* SceneDelegate.swift */; };
 		B4DFDD3327EB026B0004B7CC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DFDD3227EB026B0004B7CC /* ViewController.swift */; };
@@ -61,6 +67,11 @@
 		05CC874727EEE9E300874C18 /* GetFollowers.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = GetFollowers.graphql; sourceTree = "<group>"; };
 		05CC874927EEEF4800874C18 /* Follow.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = Follow.graphql; sourceTree = "<group>"; };
 		B48FCFE927F0638200D31DA4 /* GetFollowing.graphql */ = {isa = PBXFileReference; lastKnownFileType = text; path = GetFollowing.graphql; sourceTree = "<group>"; };
+		B48FCFEB27F08F9900D31DA4 /* GradientControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientControl.swift; sourceTree = "<group>"; };
+		B48FCFEE27F094C700D31DA4 /* ConstructorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstructorViewController.swift; sourceTree = "<group>"; };
+		B48FCFF027F0975800D31DA4 /* UIImageView+Gif.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Gif.swift"; sourceTree = "<group>"; };
+		B48FCFF227F0977200D31DA4 /* box1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = box1.gif; sourceTree = "<group>"; };
+		B48FCFF827F0A4A500D31DA4 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		B4DFDD2B27EB026B0004B7CC /* metacomics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = metacomics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4DFDD2E27EB026B0004B7CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B4DFDD3027EB026B0004B7CC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +118,7 @@
 			files = (
 				B4DFDD4927EB0F380004B7CC /* WalletConnectSwift in Frameworks */,
 				B4DFDD6C27ECAC7F0004B7CC /* ApolloWebSocket in Frameworks */,
+				B48FCFF627F098B900D31DA4 /* SwiftyGif in Frameworks */,
 				B4DFDD6A27ECAC7F0004B7CC /* ApolloUtils in Frameworks */,
 				B4DFDD6627ECAC7F0004B7CC /* Apollo in Frameworks */,
 				B4DFDD6827ECAC7F0004B7CC /* ApolloAPI in Frameworks */,
@@ -117,6 +129,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B48FCFED27F094B600D31DA4 /* Contructor */ = {
+			isa = PBXGroup;
+			children = (
+				B48FCFEE27F094C700D31DA4 /* ConstructorViewController.swift */,
+			);
+			path = Contructor;
+			sourceTree = "<group>";
+		};
+		B48FCFF727F0A47500D31DA4 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				B48FCFF827F0A4A500D31DA4 /* PreviewViewController.swift */,
+			);
+			path = Preview;
+			sourceTree = "<group>";
+		};
 		B4DFDD2227EB026B0004B7CC = {
 			isa = PBXGroup;
 			children = (
@@ -148,6 +176,8 @@
 		B4DFDD4227EB069D0004B7CC /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				B48FCFF727F0A47500D31DA4 /* Preview */,
+				B48FCFED27F094B600D31DA4 /* Contructor */,
 				B4DFDD3427EB026B0004B7CC /* Main.storyboard */,
 				B4DFDD3927EB02710004B7CC /* LaunchScreen.storyboard */,
 				B4DFDD5727EB65D70004B7CC /* BigButton */,
@@ -167,6 +197,7 @@
 				B4DFDD8D27EE24F30004B7CC /* UserDefaults+Keys.swift */,
 				B4DFDD9527EE3E420004B7CC /* NSError+Text.swift */,
 				B4DFDDAA27EF62660004B7CC /* ImageService.swift */,
+				B48FCFF027F0975800D31DA4 /* UIImageView+Gif.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -214,6 +245,7 @@
 				B4DFDD2E27EB026B0004B7CC /* AppDelegate.swift */,
 				B4DFDD3027EB026B0004B7CC /* SceneDelegate.swift */,
 				B4DFDD3727EB02710004B7CC /* Assets.xcassets */,
+				B48FCFF227F0977200D31DA4 /* box1.gif */,
 				B4DFDD3C27EB02710004B7CC /* Info.plist */,
 			);
 			path = Config;
@@ -274,6 +306,7 @@
 				B4DFDD9D27EF4B7F0004B7CC /* TokenImageCell.swift */,
 				B4DFDDA327EF53C70004B7CC /* SelectTokenSectionHeaderView.swift */,
 				B4DFDDA127EF50D70004B7CC /* SelectTokenSectionHeaderView.xib */,
+				B48FCFEB27F08F9900D31DA4 /* GradientControl.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -310,6 +343,7 @@
 				B4DFDD6727ECAC7F0004B7CC /* ApolloAPI */,
 				B4DFDD6927ECAC7F0004B7CC /* ApolloUtils */,
 				B4DFDD6B27ECAC7F0004B7CC /* ApolloWebSocket */,
+				B48FCFF527F098B900D31DA4 /* SwiftyGif */,
 			);
 			productName = metacomics;
 			productReference = B4DFDD2B27EB026B0004B7CC /* metacomics.app */;
@@ -343,6 +377,7 @@
 				B4DFDD4727EB0F370004B7CC /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
 				B4DFDD5C27EB76820004B7CC /* XCRemoteSwiftPackageReference "web3swift" */,
 				B4DFDD6427ECAC7F0004B7CC /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				B48FCFF427F098B900D31DA4 /* XCRemoteSwiftPackageReference "SwiftyGif" */,
 			);
 			productRefGroup = B4DFDD2C27EB026B0004B7CC /* Products */;
 			projectDirPath = "";
@@ -364,6 +399,7 @@
 				B4DFDD3827EB02710004B7CC /* Assets.xcassets in Resources */,
 				B48FCFEA27F0638200D31DA4 /* GetFollowing.graphql in Resources */,
 				05CC874A27EEEF4800874C18 /* Follow.graphql in Resources */,
+				B48FCFF327F0977200D31DA4 /* box1.gif in Resources */,
 				B4DFDD8C27EE16C10004B7CC /* Authenticate.graphql in Resources */,
 				05CC874827EEE9E300874C18 /* GetFollowers.graphql in Resources */,
 				B4DFDDA227EF50D70004B7CC /* SelectTokenSectionHeaderView.xib in Resources */,
@@ -411,6 +447,8 @@
 				B4DFDD8A27EE0C6B0004B7CC /* NetworkInterceptorProvider.swift in Sources */,
 				B4DFDD5927EB66270004B7CC /* BigButtonViewController.swift in Sources */,
 				B4DFDD4C27EB0FBE0004B7CC /* Aliases.swift in Sources */,
+				B48FCFEF27F094C700D31DA4 /* ConstructorViewController.swift in Sources */,
+				B48FCFF127F0975800D31DA4 /* UIImageView+Gif.swift in Sources */,
 				B4DFDDA427EF53C70004B7CC /* SelectTokenSectionHeaderView.swift in Sources */,
 				B4DFDDA727EF58220004B7CC /* TokenInfo.swift in Sources */,
 				B4DFDDA027EF4D110004B7CC /* SelectTokenViewControllerCollegue.swift in Sources */,
@@ -418,12 +456,14 @@
 				B4DFDD4E27EB10880004B7CC /* WalletConnect.swift in Sources */,
 				B4DFDD9E27EF4B7F0004B7CC /* TokenImageCell.swift in Sources */,
 				B4DFDD4627EB0EDF0004B7CC /* ConnectWalletInteractor.swift in Sources */,
+				B48FCFEC27F08F9900D31DA4 /* GradientControl.swift in Sources */,
 				B4DFDD4427EB06C90004B7CC /* ConnectWalletViewController.swift in Sources */,
 				B4DFDD9627EE3E420004B7CC /* NSError+Text.swift in Sources */,
 				B4DFDD3127EB026B0004B7CC /* SceneDelegate.swift in Sources */,
 				B4DFDDAB27EF62660004B7CC /* ImageService.swift in Sources */,
 				B4DFDD6327EC5A180004B7CC /* SelectTokensViewController.swift in Sources */,
 				B4DFDD5027EB11440004B7CC /* UIViewController+Alert.swift in Sources */,
+				B48FCFF927F0A4A500D31DA4 /* PreviewViewController.swift in Sources */,
 				B4DFDD8827EE0B8C0004B7CC /* ApolloAddingInterceptor.swift in Sources */,
 				B4DFDD8E27EE24F30004B7CC /* UserDefaults+Keys.swift in Sources */,
 				053DA54B27EDDFE40016EFD8 /* API.swift in Sources */,
@@ -649,6 +689,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B48FCFF427F098B900D31DA4 /* XCRemoteSwiftPackageReference "SwiftyGif" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kirualex/SwiftyGif.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		B4DFDD4727EB0F370004B7CC /* XCRemoteSwiftPackageReference "WalletConnectSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwift.git";
@@ -676,6 +724,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B48FCFF527F098B900D31DA4 /* SwiftyGif */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B48FCFF427F098B900D31DA4 /* XCRemoteSwiftPackageReference "SwiftyGif" */;
+			productName = SwiftyGif;
+		};
 		B4DFDD4827EB0F380004B7CC /* WalletConnectSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B4DFDD4727EB0F370004B7CC /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;

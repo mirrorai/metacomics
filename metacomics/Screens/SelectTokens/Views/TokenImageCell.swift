@@ -16,6 +16,10 @@ final class TokenImageCell: UICollectionViewCell {
     @IBOutlet private var nameLabel: UILabel!
     @IBOutlet private var subtitleLabel: UILabel!
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
+    
+    @IBOutlet private var imageViewContainerView: UIView!
+    @IBOutlet private var numberLabel: UILabel!
+    @IBOutlet private var numberBackgroundView: UIView!
 
     // MARK: - properties
 
@@ -27,6 +31,13 @@ final class TokenImageCell: UICollectionViewCell {
         nameLabel.text = nil
         subtitleLabel.text = nil
         cleanImageView()
+        imageViewContainerView.layer.borderWidth = 0 // 2
+        imageViewContainerView.layer.borderColor = UIColor(red: 96.0/255.0, green: 38.0/255, blue: 1, alpha: 1).cgColor
+        imageViewContainerView.layer.cornerRadius = 3
+        
+        numberLabel.isHidden = true
+        numberBackgroundView.isHidden = true
+        
     }
 
     override func prepareForReuse() {
@@ -53,6 +64,24 @@ final class TokenImageCell: UICollectionViewCell {
     func config(with title: String?, subtitle: String?) {
         nameLabel.text = title
         subtitleLabel.text = subtitle
+    }
+    
+    func config(isSelected: Bool, number: Int?) {
+        if isSelected {
+            imageViewContainerView.layer.borderWidth = 2
+//            numberLabel.isHidden = false
+//            numberBackgroundView.isHidden = false
+//            if let number = number {
+//                numberLabel.text = "\(number)"
+//            } else {
+//                numberLabel.text = nil
+//            }
+        } else {
+            imageViewContainerView.layer.borderWidth = 0
+//            numberLabel.isHidden = true
+//            numberBackgroundView.isHidden = true
+//            numberLabel.text = nil
+        }
     }
 
     // MARK: - animation handler

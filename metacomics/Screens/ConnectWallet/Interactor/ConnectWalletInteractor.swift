@@ -333,7 +333,7 @@ class ConnectWalletInteractor {
             case .success(let graphQLResult):
                 print("Success! Result: \(graphQLResult)")
                 guard let items = graphQLResult.data?.following.items else { return }
-                let json = items.map { $0.resultMap }
+                let json = items.map { $0.profile.resultMap }
                 do {
                     let data = try JSONSerialization.data(withJSONObject: json, options: [])
                     let profiles = try JSONDecoder().decode([ProfileItemInfo].self, from: data )
@@ -457,6 +457,15 @@ class ConnectWalletInteractor {
         }
     }
 
+    func randomName() -> String {
+            var bytes = [Int8](repeating: 0, count: 32)
+            let status = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+            if status == errSecSuccess {
+                return Data(bytes: bytes, count: 32).toHexString()
+            } else {
+                return "\(Date().timeIntervalSince1970)"
+            }
+    }
 
 }
 

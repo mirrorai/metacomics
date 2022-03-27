@@ -18,14 +18,18 @@ class SelectTokenViewControllerCollegue: NSObject {
         static let numberOfCellsPerLine = 3
         static let insetForSection = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
     }
+    
+    var selectedIndexPath: Set<IndexPath> = Set<IndexPath>()
 
     // MARK: - public properties
 
     var sections: [CollectionViewSection<TokenInfo>] = []
     
+    
     // MARK: - callbacks
 
     var onCellSelected: ((TokenInfo) -> Void)?
+    var selectedTokens: (([TokenInfo]) -> Void)?
 
 }
 
@@ -54,6 +58,7 @@ extension SelectTokenViewControllerCollegue: UICollectionViewDataSource {
         let token = section.items[indexPath.item]
         cell.config(image: nil)
         cell.config(with: token.title, subtitle: token.description)
+        cell.config(isSelected: selectedIndexPath.contains(indexPath), number: nil)
         return cell
     }
     
@@ -93,6 +98,18 @@ extension SelectTokenViewControllerCollegue: UICollectionViewDelegate {
         let section = sections[indexPath.section]
         let info = section.items[indexPath.item]
         onCellSelected?(info)
+        
+        let cell = collectionView.cellForItem(at: indexPath) as? TokenImageCell
+        if selectedIndexPath.contains(indexPath) {
+            selectedIndexPath.remove(indexPath)
+            cell?.config(isSelected: false, number: nil)
+            selectedTokens?(selectedIndexPath.map { sections[$0.section].items[$0.item] })
+        } else if selectedIndexPath.count < 3 {
+            selectedIndexPath.insert(indexPath)
+            cell?.config(isSelected: true, number: selectedIndexPath.count)
+            selectedTokens?(selectedIndexPath.map { sections[$0.section].items[$0.item] })
+        }
+        
     }
     
     func collectionView(_: UICollectionView,

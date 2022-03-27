@@ -37,36 +37,61 @@ class ConnectWalletViewController: UIViewController {
             }
     }
     
-    private func next() {
+    private func next(cleanupAuthToken: Bool = true) {
         connectWalletButton.isEnabled = false
-        statusLabel.text = "🦆 Connected"
+        statusLabel.text = "Connected"
         activityIndicator.stopAnimating()
         
         //        interactor.sign(message: "aaaa")
         
-        // CLEAN UP ACCESS TOKEN
-        let key = UserDefaults.DefaultsKeys.authenticateAccessToken.rawValue
-        UserDefaults.standard.set(nil, forKey: key)
-        
+        if cleanupAuthToken {
+            // CLEAN UP ACCESS TOKEN
+            let key = UserDefaults.DefaultsKeys.authenticateAccessToken.rawValue
+            UserDefaults.standard.set(nil, forKey: key)
+        }
+
+
+        statusLabel.text = "Load Profiles..."
+        activityIndicator.startAnimating()
         interactor.login() { _ in
             self.interactor.getProfiles { result in
                 print("=== GET_PROFILES ===")
                 guard let profiles = try? result.get() else { return }
                 print("PROFILES COUNT = \(profiles.count)")
                 
-                guard let profile = profiles.first else { return }
+                guard let profile = profiles.first else {
+                    let randomName = self.interactor.randomName()
+                    self.interactor.addProfile(username: randomName) { result in
+                        guard let value = try? result.get() else { return }
+                        DispatchQueue.global().asyncAfter(deadline: .now() + 5.0) {
+                            DispatchQueue.main.async {
+                                self.next(cleanupAuthToken: false)
+                            }
+                        }
+                    }
+                    return
+                }
                 print("PROFILE ID = \(profile.id)")
                 
                 self.interactor.getFollowers(profileId: profile.id) { result in
                     print("=== FOLLOWERS ===")
-                    guard let value = try? result.get() else { return }
-                    print("FOLLOWERS COUNT = \(value.count)")
+                    guard let followers = try? result.get() else { return }
+                    print("FOLLOWERS COUNT = \(followers.count)")
                 }
                 
                 self.interactor.getFollowing() { result in
                     print("=== FOLLOWINGS ===")
-                    guard let value = try? result.get() else { return }
-                    print("FOLLOWINGS COUNT = \(value.count)")
+                    guard let followings = try? result.get() else { return }
+                    print("FOLLOWINGS COUNT = \(followings.count)")
+                    DispatchQueue.main.async {
+                        guard let selectTokenVc = UIStoryboard.init(name: "Main", bundle: nil)
+                            .instantiateViewController(withIdentifier: "SelectTokensViewController")
+                                as? SelectTokensViewController
+                        else { return }
+                        selectTokenVc.profile = profile
+                        selectTokenVc.friends = followings
+                        self.navigationController?.pushViewController(selectTokenVc, animated: true)
+                    }
                 }
                 
                 
@@ -79,9 +104,9 @@ class ConnectWalletViewController: UIViewController {
 //                }
             }
             
-            //            self.interactor.addProfile(username: "testuser4") { result in
-            //                guard let value = try? result.get() else { return }
-            //            }
+//            self.interactor.addProfile(username: "testuser4") { result in
+//                guard let value = try? result.get() else { return }
+//            }
             
             
         }
