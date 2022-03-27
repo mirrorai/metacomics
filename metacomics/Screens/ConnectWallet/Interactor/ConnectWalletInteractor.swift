@@ -2,6 +2,8 @@ import Apollo
 import Combine
 import UIKit
 import WalletConnectSwift
+import web3swift
+import BigInt
 
 class ConnectWalletInteractor {
     
@@ -13,6 +15,8 @@ class ConnectWalletInteractor {
         case invalidUsername
         case textError(description: String)
         case followError
+        case getFollowersError
+        case getFollowingError
     }
     
     let walletConnectionSubject = PassthroughSubject<String, Error>()
@@ -98,6 +102,7 @@ class ConnectWalletInteractor {
                     completion(.success(""))
                 }
             }
+            self.walletConnect.openWallet()
         }
         
     }
@@ -310,11 +315,38 @@ class ConnectWalletInteractor {
                     }
                 } catch {
                     print("Failure! Error: \(error)")
-                    completion(.failure(.getProfilesError))
+                    completion(.failure(.getFollowersError))
                 }
             case .failure(let error):
                 print("Failure! Error: \(error)")
-                completion(.failure(.getProfilesError))
+                completion(.failure(.getFollowersError))
+            }
+        }
+    }
+    
+    func getFollowing(completion: @escaping (Swift.Result<[ProfileItemInfo], Error>) -> Void) {
+        guard let wallet = walletAddress else { return }
+        let request = FollowingRequest(limit: nil, cursor: nil, address: wallet)
+        let query = GetFollowingQuery(request: request)
+        ApolloNetwork.shared.client.fetch(query: query) { result in
+            switch result {
+            case .success(let graphQLResult):
+                print("Success! Result: \(graphQLResult)")
+                guard let items = graphQLResult.data?.following.items else { return }
+                let json = items.map { $0.resultMap }
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: json, options: [])
+                    let profiles = try JSONDecoder().decode([ProfileItemInfo].self, from: data )
+                    self.onMainThread {
+                        completion(.success(profiles))
+                    }
+                } catch {
+                    print("Failure! Error: \(error)")
+                    completion(.failure(.getFollowingError))
+                }
+            case .failure(let error):
+                print("Failure! Error: \(error)")
+                completion(.failure(.getFollowingError))
             }
         }
     }
@@ -349,7 +381,7 @@ class ConnectWalletInteractor {
                     return
                 }
 
-                /*
+                ///*
                 print("=== DATA === ")
                 print(data)
 
@@ -365,13 +397,29 @@ class ConnectWalletInteractor {
                 let message = String(data: data, encoding: String.Encoding.utf8) ?? ""
 
                 let prettyMessage = data.prettyPrintedJSONString!
+                
+                let types: [ABI.Element.ParameterType] = [.uint(bits: 256)]
+                let values: [AnyObject] = [27 as AnyObject]
+                if let encodeResult = ABIEncoder.encodeSingleType(type: .array(type: .uint(bits: 256), length: 1), value: [BigUInt(27)] as AnyObject),//ABIEncoder.encode(types: types, values: values),
+                   let kdata = Web3.Utils.keccak256(encodeResult) {
+                    
+                    let encodeResultString = kdata.toHexString()//String(data: kdata, encoding: .utf8)
+                    print("=== encodeResultString ===")
+                    print(encodeResultString)
+                    //0x3ad8aa4f87544323a9d1e5dd902f40c356527a7955687113db5f9a85ad579dc1
+                    
+                    print("=== keccak256(0)  ===")
+                    print(Web3.Utils.keccak256(Data()))
+                }
 
-                */
+                //*/
 
                 guard let walletConnect = self.walletConnect else {
                     completion(.failure(.followError))
                     return
                 }
+                
+                
 
 
                 // TODO: pass correctly formatted message var into message param
@@ -381,15 +429,23 @@ class ConnectWalletInteractor {
                 let signature = try? self.walletConnect.client.eth_signTypedData(
                     url: walletConnect.session.url,
                     account: walletConnect.session.walletInfo!.accounts[0],
-                    message: Stub.lensTypedData) // Stub.exampleTypedData
+                    message: message) // Stub.exampleTypedData / Stub.lensTypedData
                 { [weak self] response in
-                    print(response.url.key)
-
-                        self?.onMainThread {
-                            completion(.success(response.url.key))
-                        }
+                    do {
+                        let key = try response.result(as: String.self) // response.url.key
+                        print("Sign key: \(key)")
+                        completion(.success(key))
+                    } catch {
+                        print("Sign error: \(error)")
+                        completion(.failure(.followError))
                     }
+                    
+                    self?.onMainThread {
+                        completion(.success(response.url.key))
+                    }
+                }
 
+                self.walletConnect.openWallet()
 
             case .failure(let error):
                 print("Failure! Error: \(error)")
@@ -489,61 +545,34 @@ fileprivate enum Stub {
 
     static let lensTypedData = """
 {
-  "types" : {
-    "EIP712Domain": [
-        {
-            "name": "name",
-            "type": "string"
-        },
-        {
-            "name": "version",
-            "type": "string"
-        },
-        {
-            "name": "chainId",
-            "type": "uint256"
-        },
-        {
-            "name": "verifyingContract",
-            "type": "address"
-        }
-    ],
-    "FollowWithSig" : [
-      {
-        "name" : "profileIds",
-        "type" : "uint256[]"
-      },
-      {
-        "name" : "datas",
-        "type" : "bytes[]"
-      },
-      {
-        "type" : "uint256",
-        "name" : "nonce"
-      },
-      {
-        "name" : "deadline",
-        "type" : "uint256"
-      }
-    ]
-  },
-  "primaryType": "FollowWithSig",
-  "domain" : {
-    "chainId" : "80001",
-    "name" : "Lens Protocol Profiles",
-    "verifyingContract" : "0xd7B3481De00995046C7850bCe9a5196B7605c367",
-    "version" : "1"
-  },
-  "value" : {
-    "datas" : [
-      "0x"
-    ],
-    "deadline" : "1648307789",
-    "nonce" : "3",
-    "profileIds" : [
-      "0x01b6"
-    ]
-  }
+    "types": {
+        "FollowWithSig": [
+            {
+                "name": "contents",
+                "type": "string"
+            },
+            {
+                "name": "nonce",
+                "type": "uint256"
+            },
+            {
+                "name": "deadline",
+                "type": "uint256"
+            }
+        ]
+    },
+    "primaryType": "FollowWithSig",
+    "domain" : {
+        "chainId" : 80001,
+        "name" : "Lens Protocol Profiles",
+        "verifyingContract" : "0xd7B3481De00995046C7850bCe9a5196B7605c367",
+        "version" : "1"
+    },
+    "message" : {
+        "contents": "Hello, Bob!",
+        "nonce" : 1,
+        "deadline" : 1658307789
+    }
 }
 """
 

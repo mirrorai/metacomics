@@ -63,14 +63,20 @@ class ConnectWalletViewController: UIViewController {
                     print("FOLLOWERS COUNT = \(value.count)")
                 }
                 
-                
-                guard let profileToFollow = profiles.last else { return }
-                print("PROFILE_TO_FOLLOW ID = \(profileToFollow.id)")
-                
-                self.interactor.follow(profileId: profileToFollow.id) { result in
-                    print("=== FOLLOW ===")
-                    print(result)
+                self.interactor.getFollowing() { result in
+                    print("=== FOLLOWINGS ===")
+                    guard let value = try? result.get() else { return }
+                    print("FOLLOWINGS COUNT = \(value.count)")
                 }
+                
+                
+//                guard let profileToFollow = profiles.last else { return }
+//                print("PROFILE_TO_FOLLOW ID = \(profileToFollow.id)")
+//
+//                self.interactor.follow(profileId: profileToFollow.id) { result in
+//                    print("=== FOLLOW ===")
+//                    print(result)
+//                }
             }
             
             //            self.interactor.addProfile(username: "testuser4") { result in
