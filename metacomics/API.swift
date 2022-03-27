@@ -232,6 +232,94 @@ public enum RelayErrorReasons: RawRepresentable, Equatable, Hashable, CaseIterab
   }
 }
 
+public struct FollowRequest: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - follow
+  public init(follow: [Follow]) {
+    graphQLMap = ["follow": follow]
+  }
+
+  public var follow: [Follow] {
+    get {
+      return graphQLMap["follow"] as! [Follow]
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "follow")
+    }
+  }
+}
+
+public struct Follow: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - profile
+  ///   - followModule
+  public init(profile: String, followModule: Swift.Optional<FollowModuleRedeemParams?> = nil) {
+    graphQLMap = ["profile": profile, "followModule": followModule]
+  }
+
+  public var profile: String {
+    get {
+      return graphQLMap["profile"] as! String
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "profile")
+    }
+  }
+
+  public var followModule: Swift.Optional<FollowModuleRedeemParams?> {
+    get {
+      return graphQLMap["followModule"] as? Swift.Optional<FollowModuleRedeemParams?> ?? Swift.Optional<FollowModuleRedeemParams?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "followModule")
+    }
+  }
+}
+
+public struct FollowModuleRedeemParams: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - feeFollowModule: The follower fee follower module
+  public init(feeFollowModule: Swift.Optional<FeeFollowModuleRedeemParams?> = nil) {
+    graphQLMap = ["feeFollowModule": feeFollowModule]
+  }
+
+  /// The follower fee follower module
+  public var feeFollowModule: Swift.Optional<FeeFollowModuleRedeemParams?> {
+    get {
+      return graphQLMap["feeFollowModule"] as? Swift.Optional<FeeFollowModuleRedeemParams?> ?? Swift.Optional<FeeFollowModuleRedeemParams?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "feeFollowModule")
+    }
+  }
+}
+
+public struct FeeFollowModuleRedeemParams: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - amount: The expected amount to pay
+  public init(amount: ModuleFeeAmountParams) {
+    graphQLMap = ["amount": amount]
+  }
+
+  /// The expected amount to pay
+  public var amount: ModuleFeeAmountParams {
+    get {
+      return graphQLMap["amount"] as! ModuleFeeAmountParams
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "amount")
+    }
+  }
+}
+
 /// The challenge request
 public struct ChallengeRequest: GraphQLMapConvertible {
   public var graphQLMap: GraphQLMap
@@ -325,6 +413,45 @@ public enum FollowModules: RawRepresentable, Equatable, Hashable, CaseIterable, 
     return [
       .feeFollowModule,
     ]
+  }
+}
+
+public struct FollowingRequest: GraphQLMapConvertible {
+  public var graphQLMap: GraphQLMap
+
+  /// - Parameters:
+  ///   - limit
+  ///   - cursor
+  ///   - address
+  public init(limit: Swift.Optional<String?> = nil, cursor: Swift.Optional<String?> = nil, address: String) {
+    graphQLMap = ["limit": limit, "cursor": cursor, "address": address]
+  }
+
+  public var limit: Swift.Optional<String?> {
+    get {
+      return graphQLMap["limit"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "limit")
+    }
+  }
+
+  public var cursor: Swift.Optional<String?> {
+    get {
+      return graphQLMap["cursor"] as? Swift.Optional<String?> ?? Swift.Optional<String?>.none
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "cursor")
+    }
+  }
+
+  public var address: String {
+    get {
+      return graphQLMap["address"] as! String
+    }
+    set {
+      graphQLMap.updateValue(newValue, forKey: "address")
+    }
   }
 }
 
@@ -803,6 +930,442 @@ public final class CreateProfileMutation: GraphQLMutation {
           }
           set {
             resultMap.updateValue(newValue, forKey: "reason")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class FollowMutation: GraphQLMutation {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    mutation Follow($request: FollowRequest!) {
+      createFollowTypedData(request: $request) {
+        __typename
+        id
+        expiresAt
+        typedData {
+          __typename
+          domain {
+            __typename
+            name
+            chainId
+            version
+            verifyingContract
+          }
+          types {
+            __typename
+            FollowWithSig {
+              __typename
+              name
+              type
+            }
+          }
+          value {
+            __typename
+            nonce
+            deadline
+            profileIds
+            datas
+          }
+        }
+      }
+    }
+    """
+
+  public let operationName: String = "Follow"
+
+  public var request: FollowRequest
+
+  public init(request: FollowRequest) {
+    self.request = request
+  }
+
+  public var variables: GraphQLMap? {
+    return ["request": request]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Mutation"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("createFollowTypedData", arguments: ["request": GraphQLVariable("request")], type: .nonNull(.object(CreateFollowTypedDatum.selections))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(createFollowTypedData: CreateFollowTypedDatum) {
+      self.init(unsafeResultMap: ["__typename": "Mutation", "createFollowTypedData": createFollowTypedData.resultMap])
+    }
+
+    public var createFollowTypedData: CreateFollowTypedDatum {
+      get {
+        return CreateFollowTypedDatum(unsafeResultMap: resultMap["createFollowTypedData"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "createFollowTypedData")
+      }
+    }
+
+    public struct CreateFollowTypedDatum: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["CreateFollowBroadcastItemResult"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .nonNull(.scalar(String.self))),
+          GraphQLField("expiresAt", type: .nonNull(.scalar(String.self))),
+          GraphQLField("typedData", type: .nonNull(.object(TypedDatum.selections))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(id: String, expiresAt: String, typedData: TypedDatum) {
+        self.init(unsafeResultMap: ["__typename": "CreateFollowBroadcastItemResult", "id": id, "expiresAt": expiresAt, "typedData": typedData.resultMap])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      /// This broadcast item ID
+      public var id: String {
+        get {
+          return resultMap["id"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "id")
+        }
+      }
+
+      /// The date the broadcast item expiries
+      public var expiresAt: String {
+        get {
+          return resultMap["expiresAt"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "expiresAt")
+        }
+      }
+
+      /// The typed data
+      public var typedData: TypedDatum {
+        get {
+          return TypedDatum(unsafeResultMap: resultMap["typedData"]! as! ResultMap)
+        }
+        set {
+          resultMap.updateValue(newValue.resultMap, forKey: "typedData")
+        }
+      }
+
+      public struct TypedDatum: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["CreateFollowEIP712TypedData"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("domain", type: .nonNull(.object(Domain.selections))),
+            GraphQLField("types", type: .nonNull(.object(`Type`.selections))),
+            GraphQLField("value", type: .nonNull(.object(Value.selections))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(domain: Domain, types: `Type`, value: Value) {
+          self.init(unsafeResultMap: ["__typename": "CreateFollowEIP712TypedData", "domain": domain.resultMap, "types": types.resultMap, "value": value.resultMap])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// The typed data domain
+        public var domain: Domain {
+          get {
+            return Domain(unsafeResultMap: resultMap["domain"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "domain")
+          }
+        }
+
+        /// The types
+        public var types: `Type` {
+          get {
+            return `Type`(unsafeResultMap: resultMap["types"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "types")
+          }
+        }
+
+        /// The values
+        public var value: Value {
+          get {
+            return Value(unsafeResultMap: resultMap["value"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "value")
+          }
+        }
+
+        public struct Domain: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["EIP712TypedDataDomain"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("name", type: .nonNull(.scalar(String.self))),
+              GraphQLField("chainId", type: .nonNull(.scalar(String.self))),
+              GraphQLField("version", type: .nonNull(.scalar(String.self))),
+              GraphQLField("verifyingContract", type: .nonNull(.scalar(String.self))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(name: String, chainId: String, version: String, verifyingContract: String) {
+            self.init(unsafeResultMap: ["__typename": "EIP712TypedDataDomain", "name": name, "chainId": chainId, "version": version, "verifyingContract": verifyingContract])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// The name of the typed data domain
+          public var name: String {
+            get {
+              return resultMap["name"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "name")
+            }
+          }
+
+          /// The chainId
+          public var chainId: String {
+            get {
+              return resultMap["chainId"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "chainId")
+            }
+          }
+
+          /// The version
+          public var version: String {
+            get {
+              return resultMap["version"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "version")
+            }
+          }
+
+          /// The verifying contract
+          public var verifyingContract: String {
+            get {
+              return resultMap["verifyingContract"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "verifyingContract")
+            }
+          }
+        }
+
+        public struct `Type`: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["CreateFollowEIP712TypedDataTypes"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("FollowWithSig", type: .nonNull(.list(.nonNull(.object(FollowWithSig.selections))))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(followWithSig: [FollowWithSig]) {
+            self.init(unsafeResultMap: ["__typename": "CreateFollowEIP712TypedDataTypes", "FollowWithSig": followWithSig.map { (value: FollowWithSig) -> ResultMap in value.resultMap }])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var followWithSig: [FollowWithSig] {
+            get {
+              return (resultMap["FollowWithSig"] as! [ResultMap]).map { (value: ResultMap) -> FollowWithSig in FollowWithSig(unsafeResultMap: value) }
+            }
+            set {
+              resultMap.updateValue(newValue.map { (value: FollowWithSig) -> ResultMap in value.resultMap }, forKey: "FollowWithSig")
+            }
+          }
+
+          public struct FollowWithSig: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["EIP712TypedDataField"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("name", type: .nonNull(.scalar(String.self))),
+                GraphQLField("type", type: .nonNull(.scalar(String.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(name: String, type: String) {
+              self.init(unsafeResultMap: ["__typename": "EIP712TypedDataField", "name": name, "type": type])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// The name of the typed data field
+            public var name: String {
+              get {
+                return resultMap["name"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "name")
+              }
+            }
+
+            /// The type of the typed data field
+            public var type: String {
+              get {
+                return resultMap["type"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "type")
+              }
+            }
+          }
+        }
+
+        public struct Value: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["CreateFollowEIP712TypedDataValue"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("nonce", type: .nonNull(.scalar(String.self))),
+              GraphQLField("deadline", type: .nonNull(.scalar(String.self))),
+              GraphQLField("profileIds", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+              GraphQLField("datas", type: .nonNull(.list(.nonNull(.scalar(String.self))))),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(nonce: String, deadline: String, profileIds: [String], datas: [String]) {
+            self.init(unsafeResultMap: ["__typename": "CreateFollowEIP712TypedDataValue", "nonce": nonce, "deadline": deadline, "profileIds": profileIds, "datas": datas])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          public var nonce: String {
+            get {
+              return resultMap["nonce"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "nonce")
+            }
+          }
+
+          public var deadline: String {
+            get {
+              return resultMap["deadline"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "deadline")
+            }
+          }
+
+          public var profileIds: [String] {
+            get {
+              return resultMap["profileIds"]! as! [String]
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "profileIds")
+            }
+          }
+
+          public var datas: [String] {
+            get {
+              return resultMap["datas"]! as! [String]
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "datas")
+            }
           }
         }
       }
@@ -2168,6 +2731,1690 @@ public final class GetFollowersQuery: GraphQLQuery {
                     set {
                       resultMap.updateValue(newValue, forKey: "address")
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      public struct PageInfo: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["PaginatedResultInfo"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("prev", type: .scalar(String.self)),
+            GraphQLField("next", type: .scalar(String.self)),
+            GraphQLField("totalCount", type: .nonNull(.scalar(Int.self))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(prev: String? = nil, next: String? = nil, totalCount: Int) {
+          self.init(unsafeResultMap: ["__typename": "PaginatedResultInfo", "prev": prev, "next": next, "totalCount": totalCount])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        /// Cursor to query the actual results
+        public var prev: String? {
+          get {
+            return resultMap["prev"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "prev")
+          }
+        }
+
+        /// Cursor to query next results
+        public var next: String? {
+          get {
+            return resultMap["next"] as? String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "next")
+          }
+        }
+
+        /// The total number of entities the pagination iterates over. e.g. For a query that requests all nfts with more than 10 likes, this field gives the total amount of nfts with more than 10 likes, not the total amount of nfts
+        public var totalCount: Int {
+          get {
+            return resultMap["totalCount"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "totalCount")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class GetFollowingQuery: GraphQLQuery {
+  /// The raw GraphQL definition of this operation.
+  public let operationDefinition: String =
+    """
+    query GetFollowing($request: FollowingRequest!) {
+      following(request: $request) {
+        __typename
+        items {
+          __typename
+          profile {
+            __typename
+            id
+            name
+            bio
+            location
+            website
+            twitterUrl
+            handle
+            picture {
+              __typename
+              ... on NftImage {
+                __typename
+                contractAddress
+                tokenId
+                uri
+                verified
+              }
+              ... on MediaSet {
+                __typename
+                original {
+                  __typename
+                  url
+                  width
+                  height
+                  mimeType
+                }
+                medium {
+                  __typename
+                  url
+                  width
+                  height
+                  mimeType
+                }
+                small {
+                  __typename
+                  url
+                  width
+                  height
+                  mimeType
+                }
+              }
+            }
+            coverPicture {
+              __typename
+              ... on NftImage {
+                __typename
+                contractAddress
+                tokenId
+                uri
+                verified
+              }
+              ... on MediaSet {
+                __typename
+                original {
+                  __typename
+                  url
+                  width
+                  height
+                  mimeType
+                }
+                small {
+                  __typename
+                  width
+                  url
+                  height
+                  mimeType
+                }
+                medium {
+                  __typename
+                  url
+                  width
+                  height
+                  mimeType
+                }
+              }
+            }
+            ownedBy
+            depatcher {
+              __typename
+              address
+              canUseRelay
+            }
+            stats {
+              __typename
+              totalFollowers
+              totalFollowing
+              totalPosts
+              totalComments
+              totalMirrors
+              totalPublications
+              totalCollects
+            }
+            followModule {
+              __typename
+              ... on FeeFollowModuleSettings {
+                __typename
+                type
+                amount {
+                  __typename
+                  asset {
+                    __typename
+                    name
+                    symbol
+                    decimals
+                    address
+                  }
+                  value
+                }
+                recipient
+              }
+            }
+          }
+          totalAmountOfTimesFollowing
+        }
+        pageInfo {
+          __typename
+          prev
+          next
+          totalCount
+        }
+      }
+    }
+    """
+
+  public let operationName: String = "GetFollowing"
+
+  public var request: FollowingRequest
+
+  public init(request: FollowingRequest) {
+    self.request = request
+  }
+
+  public var variables: GraphQLMap? {
+    return ["request": request]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes: [String] = ["Query"]
+
+    public static var selections: [GraphQLSelection] {
+      return [
+        GraphQLField("following", arguments: ["request": GraphQLVariable("request")], type: .nonNull(.object(Following.selections))),
+      ]
+    }
+
+    public private(set) var resultMap: ResultMap
+
+    public init(unsafeResultMap: ResultMap) {
+      self.resultMap = unsafeResultMap
+    }
+
+    public init(following: Following) {
+      self.init(unsafeResultMap: ["__typename": "Query", "following": following.resultMap])
+    }
+
+    public var following: Following {
+      get {
+        return Following(unsafeResultMap: resultMap["following"]! as! ResultMap)
+      }
+      set {
+        resultMap.updateValue(newValue.resultMap, forKey: "following")
+      }
+    }
+
+    public struct Following: GraphQLSelectionSet {
+      public static let possibleTypes: [String] = ["PaginatedFollowingResult"]
+
+      public static var selections: [GraphQLSelection] {
+        return [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("items", type: .nonNull(.list(.nonNull(.object(Item.selections))))),
+          GraphQLField("pageInfo", type: .nonNull(.object(PageInfo.selections))),
+        ]
+      }
+
+      public private(set) var resultMap: ResultMap
+
+      public init(unsafeResultMap: ResultMap) {
+        self.resultMap = unsafeResultMap
+      }
+
+      public init(items: [Item], pageInfo: PageInfo) {
+        self.init(unsafeResultMap: ["__typename": "PaginatedFollowingResult", "items": items.map { (value: Item) -> ResultMap in value.resultMap }, "pageInfo": pageInfo.resultMap])
+      }
+
+      public var __typename: String {
+        get {
+          return resultMap["__typename"]! as! String
+        }
+        set {
+          resultMap.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var items: [Item] {
+        get {
+          return (resultMap["items"] as! [ResultMap]).map { (value: ResultMap) -> Item in Item(unsafeResultMap: value) }
+        }
+        set {
+          resultMap.updateValue(newValue.map { (value: Item) -> ResultMap in value.resultMap }, forKey: "items")
+        }
+      }
+
+      public var pageInfo: PageInfo {
+        get {
+          return PageInfo(unsafeResultMap: resultMap["pageInfo"]! as! ResultMap)
+        }
+        set {
+          resultMap.updateValue(newValue.resultMap, forKey: "pageInfo")
+        }
+      }
+
+      public struct Item: GraphQLSelectionSet {
+        public static let possibleTypes: [String] = ["Following"]
+
+        public static var selections: [GraphQLSelection] {
+          return [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("profile", type: .nonNull(.object(Profile.selections))),
+            GraphQLField("totalAmountOfTimesFollowing", type: .nonNull(.scalar(Int.self))),
+          ]
+        }
+
+        public private(set) var resultMap: ResultMap
+
+        public init(unsafeResultMap: ResultMap) {
+          self.resultMap = unsafeResultMap
+        }
+
+        public init(profile: Profile, totalAmountOfTimesFollowing: Int) {
+          self.init(unsafeResultMap: ["__typename": "Following", "profile": profile.resultMap, "totalAmountOfTimesFollowing": totalAmountOfTimesFollowing])
+        }
+
+        public var __typename: String {
+          get {
+            return resultMap["__typename"]! as! String
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var profile: Profile {
+          get {
+            return Profile(unsafeResultMap: resultMap["profile"]! as! ResultMap)
+          }
+          set {
+            resultMap.updateValue(newValue.resultMap, forKey: "profile")
+          }
+        }
+
+        public var totalAmountOfTimesFollowing: Int {
+          get {
+            return resultMap["totalAmountOfTimesFollowing"]! as! Int
+          }
+          set {
+            resultMap.updateValue(newValue, forKey: "totalAmountOfTimesFollowing")
+          }
+        }
+
+        public struct Profile: GraphQLSelectionSet {
+          public static let possibleTypes: [String] = ["Profile"]
+
+          public static var selections: [GraphQLSelection] {
+            return [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("id", type: .nonNull(.scalar(String.self))),
+              GraphQLField("name", type: .scalar(String.self)),
+              GraphQLField("bio", type: .scalar(String.self)),
+              GraphQLField("location", type: .scalar(String.self)),
+              GraphQLField("website", type: .scalar(String.self)),
+              GraphQLField("twitterUrl", type: .scalar(String.self)),
+              GraphQLField("handle", type: .nonNull(.scalar(String.self))),
+              GraphQLField("picture", type: .object(Picture.selections)),
+              GraphQLField("coverPicture", type: .object(CoverPicture.selections)),
+              GraphQLField("ownedBy", type: .nonNull(.scalar(String.self))),
+              GraphQLField("depatcher", type: .object(Depatcher.selections)),
+              GraphQLField("stats", type: .nonNull(.object(Stat.selections))),
+              GraphQLField("followModule", type: .object(FollowModule.selections)),
+            ]
+          }
+
+          public private(set) var resultMap: ResultMap
+
+          public init(unsafeResultMap: ResultMap) {
+            self.resultMap = unsafeResultMap
+          }
+
+          public init(id: String, name: String? = nil, bio: String? = nil, location: String? = nil, website: String? = nil, twitterUrl: String? = nil, handle: String, picture: Picture? = nil, coverPicture: CoverPicture? = nil, ownedBy: String, depatcher: Depatcher? = nil, stats: Stat, followModule: FollowModule? = nil) {
+            self.init(unsafeResultMap: ["__typename": "Profile", "id": id, "name": name, "bio": bio, "location": location, "website": website, "twitterUrl": twitterUrl, "handle": handle, "picture": picture.flatMap { (value: Picture) -> ResultMap in value.resultMap }, "coverPicture": coverPicture.flatMap { (value: CoverPicture) -> ResultMap in value.resultMap }, "ownedBy": ownedBy, "depatcher": depatcher.flatMap { (value: Depatcher) -> ResultMap in value.resultMap }, "stats": stats.resultMap, "followModule": followModule.flatMap { (value: FollowModule) -> ResultMap in value.resultMap }])
+          }
+
+          public var __typename: String {
+            get {
+              return resultMap["__typename"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "__typename")
+            }
+          }
+
+          /// The profile id
+          public var id: String {
+            get {
+              return resultMap["id"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "id")
+            }
+          }
+
+          /// Name of the profile
+          public var name: String? {
+            get {
+              return resultMap["name"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "name")
+            }
+          }
+
+          /// Bio of the profile
+          public var bio: String? {
+            get {
+              return resultMap["bio"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "bio")
+            }
+          }
+
+          /// Location set on profile
+          public var location: String? {
+            get {
+              return resultMap["location"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "location")
+            }
+          }
+
+          /// Website set on profile
+          public var website: String? {
+            get {
+              return resultMap["website"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "website")
+            }
+          }
+
+          /// Twitter url set on profile
+          public var twitterUrl: String? {
+            get {
+              return resultMap["twitterUrl"] as? String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "twitterUrl")
+            }
+          }
+
+          /// The profile handle
+          public var handle: String {
+            get {
+              return resultMap["handle"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "handle")
+            }
+          }
+
+          /// The picture for the profile
+          public var picture: Picture? {
+            get {
+              return (resultMap["picture"] as? ResultMap).flatMap { Picture(unsafeResultMap: $0) }
+            }
+            set {
+              resultMap.updateValue(newValue?.resultMap, forKey: "picture")
+            }
+          }
+
+          /// The cover picture for the profile
+          public var coverPicture: CoverPicture? {
+            get {
+              return (resultMap["coverPicture"] as? ResultMap).flatMap { CoverPicture(unsafeResultMap: $0) }
+            }
+            set {
+              resultMap.updateValue(newValue?.resultMap, forKey: "coverPicture")
+            }
+          }
+
+          /// Who owns the profile
+          public var ownedBy: String {
+            get {
+              return resultMap["ownedBy"]! as! String
+            }
+            set {
+              resultMap.updateValue(newValue, forKey: "ownedBy")
+            }
+          }
+
+          /// The dispatcher
+          public var depatcher: Depatcher? {
+            get {
+              return (resultMap["depatcher"] as? ResultMap).flatMap { Depatcher(unsafeResultMap: $0) }
+            }
+            set {
+              resultMap.updateValue(newValue?.resultMap, forKey: "depatcher")
+            }
+          }
+
+          /// Profile stats
+          public var stats: Stat {
+            get {
+              return Stat(unsafeResultMap: resultMap["stats"]! as! ResultMap)
+            }
+            set {
+              resultMap.updateValue(newValue.resultMap, forKey: "stats")
+            }
+          }
+
+          /// The follow module
+          public var followModule: FollowModule? {
+            get {
+              return (resultMap["followModule"] as? ResultMap).flatMap { FollowModule(unsafeResultMap: $0) }
+            }
+            set {
+              resultMap.updateValue(newValue?.resultMap, forKey: "followModule")
+            }
+          }
+
+          public struct Picture: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["NftImage", "MediaSet"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLTypeCase(
+                  variants: ["NftImage": AsNftImage.selections, "MediaSet": AsMediaSet.selections],
+                  default: [
+                    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  ]
+                )
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public static func makeNftImage(contractAddress: String, tokenId: String, uri: String, verified: Bool) -> Picture {
+              return Picture(unsafeResultMap: ["__typename": "NftImage", "contractAddress": contractAddress, "tokenId": tokenId, "uri": uri, "verified": verified])
+            }
+
+            public static func makeMediaSet(original: AsMediaSet.Original, medium: AsMediaSet.Medium? = nil, small: AsMediaSet.Small? = nil) -> Picture {
+              return Picture(unsafeResultMap: ["__typename": "MediaSet", "original": original.resultMap, "medium": medium.flatMap { (value: AsMediaSet.Medium) -> ResultMap in value.resultMap }, "small": small.flatMap { (value: AsMediaSet.Small) -> ResultMap in value.resultMap }])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var asNftImage: AsNftImage? {
+              get {
+                if !AsNftImage.possibleTypes.contains(__typename) { return nil }
+                return AsNftImage(unsafeResultMap: resultMap)
+              }
+              set {
+                guard let newValue = newValue else { return }
+                resultMap = newValue.resultMap
+              }
+            }
+
+            public struct AsNftImage: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["NftImage"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("contractAddress", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("tokenId", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("uri", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("verified", type: .nonNull(.scalar(Bool.self))),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public init(contractAddress: String, tokenId: String, uri: String, verified: Bool) {
+                self.init(unsafeResultMap: ["__typename": "NftImage", "contractAddress": contractAddress, "tokenId": tokenId, "uri": uri, "verified": verified])
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              /// The contract address
+              public var contractAddress: String {
+                get {
+                  return resultMap["contractAddress"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "contractAddress")
+                }
+              }
+
+              /// The token id of the nft
+              public var tokenId: String {
+                get {
+                  return resultMap["tokenId"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "tokenId")
+                }
+              }
+
+              /// The token image nft
+              public var uri: String {
+                get {
+                  return resultMap["uri"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "uri")
+                }
+              }
+
+              /// If the NFT is verified
+              public var verified: Bool {
+                get {
+                  return resultMap["verified"]! as! Bool
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "verified")
+                }
+              }
+            }
+
+            public var asMediaSet: AsMediaSet? {
+              get {
+                if !AsMediaSet.possibleTypes.contains(__typename) { return nil }
+                return AsMediaSet(unsafeResultMap: resultMap)
+              }
+              set {
+                guard let newValue = newValue else { return }
+                resultMap = newValue.resultMap
+              }
+            }
+
+            public struct AsMediaSet: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["MediaSet"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("original", type: .nonNull(.object(Original.selections))),
+                  GraphQLField("medium", type: .object(Medium.selections)),
+                  GraphQLField("small", type: .object(Small.selections)),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public init(original: Original, medium: Medium? = nil, small: Small? = nil) {
+                self.init(unsafeResultMap: ["__typename": "MediaSet", "original": original.resultMap, "medium": medium.flatMap { (value: Medium) -> ResultMap in value.resultMap }, "small": small.flatMap { (value: Small) -> ResultMap in value.resultMap }])
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              /// Original media
+              public var original: Original {
+                get {
+                  return Original(unsafeResultMap: resultMap["original"]! as! ResultMap)
+                }
+                set {
+                  resultMap.updateValue(newValue.resultMap, forKey: "original")
+                }
+              }
+
+              /// Medium media - will always be null on the public API
+              public var medium: Medium? {
+                get {
+                  return (resultMap["medium"] as? ResultMap).flatMap { Medium(unsafeResultMap: $0) }
+                }
+                set {
+                  resultMap.updateValue(newValue?.resultMap, forKey: "medium")
+                }
+              }
+
+              /// Small media - will always be null on the public API
+              public var small: Small? {
+                get {
+                  return (resultMap["small"] as? ResultMap).flatMap { Small(unsafeResultMap: $0) }
+                }
+                set {
+                  resultMap.updateValue(newValue?.resultMap, forKey: "small")
+                }
+              }
+
+              public struct Original: GraphQLSelectionSet {
+                public static let possibleTypes: [String] = ["Media"]
+
+                public static var selections: [GraphQLSelection] {
+                  return [
+                    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("url", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("width", type: .scalar(Int.self)),
+                    GraphQLField("height", type: .scalar(Int.self)),
+                    GraphQLField("mimeType", type: .scalar(String.self)),
+                  ]
+                }
+
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public init(url: String, width: Int? = nil, height: Int? = nil, mimeType: String? = nil) {
+                  self.init(unsafeResultMap: ["__typename": "Media", "url": url, "width": width, "height": height, "mimeType": mimeType])
+                }
+
+                public var __typename: String {
+                  get {
+                    return resultMap["__typename"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                /// The token image nft
+                public var url: String {
+                  get {
+                    return resultMap["url"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "url")
+                  }
+                }
+
+                /// Width - will always be null on the public API
+                public var width: Int? {
+                  get {
+                    return resultMap["width"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "width")
+                  }
+                }
+
+                /// Height - will always be null on the public API
+                public var height: Int? {
+                  get {
+                    return resultMap["height"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "height")
+                  }
+                }
+
+                /// The image/audio/video mime type for the publication
+                public var mimeType: String? {
+                  get {
+                    return resultMap["mimeType"] as? String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "mimeType")
+                  }
+                }
+              }
+
+              public struct Medium: GraphQLSelectionSet {
+                public static let possibleTypes: [String] = ["Media"]
+
+                public static var selections: [GraphQLSelection] {
+                  return [
+                    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("url", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("width", type: .scalar(Int.self)),
+                    GraphQLField("height", type: .scalar(Int.self)),
+                    GraphQLField("mimeType", type: .scalar(String.self)),
+                  ]
+                }
+
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public init(url: String, width: Int? = nil, height: Int? = nil, mimeType: String? = nil) {
+                  self.init(unsafeResultMap: ["__typename": "Media", "url": url, "width": width, "height": height, "mimeType": mimeType])
+                }
+
+                public var __typename: String {
+                  get {
+                    return resultMap["__typename"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                /// The token image nft
+                public var url: String {
+                  get {
+                    return resultMap["url"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "url")
+                  }
+                }
+
+                /// Width - will always be null on the public API
+                public var width: Int? {
+                  get {
+                    return resultMap["width"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "width")
+                  }
+                }
+
+                /// Height - will always be null on the public API
+                public var height: Int? {
+                  get {
+                    return resultMap["height"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "height")
+                  }
+                }
+
+                /// The image/audio/video mime type for the publication
+                public var mimeType: String? {
+                  get {
+                    return resultMap["mimeType"] as? String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "mimeType")
+                  }
+                }
+              }
+
+              public struct Small: GraphQLSelectionSet {
+                public static let possibleTypes: [String] = ["Media"]
+
+                public static var selections: [GraphQLSelection] {
+                  return [
+                    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("url", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("width", type: .scalar(Int.self)),
+                    GraphQLField("height", type: .scalar(Int.self)),
+                    GraphQLField("mimeType", type: .scalar(String.self)),
+                  ]
+                }
+
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public init(url: String, width: Int? = nil, height: Int? = nil, mimeType: String? = nil) {
+                  self.init(unsafeResultMap: ["__typename": "Media", "url": url, "width": width, "height": height, "mimeType": mimeType])
+                }
+
+                public var __typename: String {
+                  get {
+                    return resultMap["__typename"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                /// The token image nft
+                public var url: String {
+                  get {
+                    return resultMap["url"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "url")
+                  }
+                }
+
+                /// Width - will always be null on the public API
+                public var width: Int? {
+                  get {
+                    return resultMap["width"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "width")
+                  }
+                }
+
+                /// Height - will always be null on the public API
+                public var height: Int? {
+                  get {
+                    return resultMap["height"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "height")
+                  }
+                }
+
+                /// The image/audio/video mime type for the publication
+                public var mimeType: String? {
+                  get {
+                    return resultMap["mimeType"] as? String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "mimeType")
+                  }
+                }
+              }
+            }
+          }
+
+          public struct CoverPicture: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["NftImage", "MediaSet"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLTypeCase(
+                  variants: ["NftImage": AsNftImage.selections, "MediaSet": AsMediaSet.selections],
+                  default: [
+                    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  ]
+                )
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public static func makeNftImage(contractAddress: String, tokenId: String, uri: String, verified: Bool) -> CoverPicture {
+              return CoverPicture(unsafeResultMap: ["__typename": "NftImage", "contractAddress": contractAddress, "tokenId": tokenId, "uri": uri, "verified": verified])
+            }
+
+            public static func makeMediaSet(original: AsMediaSet.Original, small: AsMediaSet.Small? = nil, medium: AsMediaSet.Medium? = nil) -> CoverPicture {
+              return CoverPicture(unsafeResultMap: ["__typename": "MediaSet", "original": original.resultMap, "small": small.flatMap { (value: AsMediaSet.Small) -> ResultMap in value.resultMap }, "medium": medium.flatMap { (value: AsMediaSet.Medium) -> ResultMap in value.resultMap }])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var asNftImage: AsNftImage? {
+              get {
+                if !AsNftImage.possibleTypes.contains(__typename) { return nil }
+                return AsNftImage(unsafeResultMap: resultMap)
+              }
+              set {
+                guard let newValue = newValue else { return }
+                resultMap = newValue.resultMap
+              }
+            }
+
+            public struct AsNftImage: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["NftImage"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("contractAddress", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("tokenId", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("uri", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("verified", type: .nonNull(.scalar(Bool.self))),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public init(contractAddress: String, tokenId: String, uri: String, verified: Bool) {
+                self.init(unsafeResultMap: ["__typename": "NftImage", "contractAddress": contractAddress, "tokenId": tokenId, "uri": uri, "verified": verified])
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              /// The contract address
+              public var contractAddress: String {
+                get {
+                  return resultMap["contractAddress"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "contractAddress")
+                }
+              }
+
+              /// The token id of the nft
+              public var tokenId: String {
+                get {
+                  return resultMap["tokenId"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "tokenId")
+                }
+              }
+
+              /// The token image nft
+              public var uri: String {
+                get {
+                  return resultMap["uri"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "uri")
+                }
+              }
+
+              /// If the NFT is verified
+              public var verified: Bool {
+                get {
+                  return resultMap["verified"]! as! Bool
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "verified")
+                }
+              }
+            }
+
+            public var asMediaSet: AsMediaSet? {
+              get {
+                if !AsMediaSet.possibleTypes.contains(__typename) { return nil }
+                return AsMediaSet(unsafeResultMap: resultMap)
+              }
+              set {
+                guard let newValue = newValue else { return }
+                resultMap = newValue.resultMap
+              }
+            }
+
+            public struct AsMediaSet: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["MediaSet"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("original", type: .nonNull(.object(Original.selections))),
+                  GraphQLField("small", type: .object(Small.selections)),
+                  GraphQLField("medium", type: .object(Medium.selections)),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public init(original: Original, small: Small? = nil, medium: Medium? = nil) {
+                self.init(unsafeResultMap: ["__typename": "MediaSet", "original": original.resultMap, "small": small.flatMap { (value: Small) -> ResultMap in value.resultMap }, "medium": medium.flatMap { (value: Medium) -> ResultMap in value.resultMap }])
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              /// Original media
+              public var original: Original {
+                get {
+                  return Original(unsafeResultMap: resultMap["original"]! as! ResultMap)
+                }
+                set {
+                  resultMap.updateValue(newValue.resultMap, forKey: "original")
+                }
+              }
+
+              /// Small media - will always be null on the public API
+              public var small: Small? {
+                get {
+                  return (resultMap["small"] as? ResultMap).flatMap { Small(unsafeResultMap: $0) }
+                }
+                set {
+                  resultMap.updateValue(newValue?.resultMap, forKey: "small")
+                }
+              }
+
+              /// Medium media - will always be null on the public API
+              public var medium: Medium? {
+                get {
+                  return (resultMap["medium"] as? ResultMap).flatMap { Medium(unsafeResultMap: $0) }
+                }
+                set {
+                  resultMap.updateValue(newValue?.resultMap, forKey: "medium")
+                }
+              }
+
+              public struct Original: GraphQLSelectionSet {
+                public static let possibleTypes: [String] = ["Media"]
+
+                public static var selections: [GraphQLSelection] {
+                  return [
+                    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("url", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("width", type: .scalar(Int.self)),
+                    GraphQLField("height", type: .scalar(Int.self)),
+                    GraphQLField("mimeType", type: .scalar(String.self)),
+                  ]
+                }
+
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public init(url: String, width: Int? = nil, height: Int? = nil, mimeType: String? = nil) {
+                  self.init(unsafeResultMap: ["__typename": "Media", "url": url, "width": width, "height": height, "mimeType": mimeType])
+                }
+
+                public var __typename: String {
+                  get {
+                    return resultMap["__typename"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                /// The token image nft
+                public var url: String {
+                  get {
+                    return resultMap["url"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "url")
+                  }
+                }
+
+                /// Width - will always be null on the public API
+                public var width: Int? {
+                  get {
+                    return resultMap["width"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "width")
+                  }
+                }
+
+                /// Height - will always be null on the public API
+                public var height: Int? {
+                  get {
+                    return resultMap["height"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "height")
+                  }
+                }
+
+                /// The image/audio/video mime type for the publication
+                public var mimeType: String? {
+                  get {
+                    return resultMap["mimeType"] as? String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "mimeType")
+                  }
+                }
+              }
+
+              public struct Small: GraphQLSelectionSet {
+                public static let possibleTypes: [String] = ["Media"]
+
+                public static var selections: [GraphQLSelection] {
+                  return [
+                    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("width", type: .scalar(Int.self)),
+                    GraphQLField("url", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("height", type: .scalar(Int.self)),
+                    GraphQLField("mimeType", type: .scalar(String.self)),
+                  ]
+                }
+
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public init(width: Int? = nil, url: String, height: Int? = nil, mimeType: String? = nil) {
+                  self.init(unsafeResultMap: ["__typename": "Media", "width": width, "url": url, "height": height, "mimeType": mimeType])
+                }
+
+                public var __typename: String {
+                  get {
+                    return resultMap["__typename"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                /// Width - will always be null on the public API
+                public var width: Int? {
+                  get {
+                    return resultMap["width"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "width")
+                  }
+                }
+
+                /// The token image nft
+                public var url: String {
+                  get {
+                    return resultMap["url"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "url")
+                  }
+                }
+
+                /// Height - will always be null on the public API
+                public var height: Int? {
+                  get {
+                    return resultMap["height"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "height")
+                  }
+                }
+
+                /// The image/audio/video mime type for the publication
+                public var mimeType: String? {
+                  get {
+                    return resultMap["mimeType"] as? String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "mimeType")
+                  }
+                }
+              }
+
+              public struct Medium: GraphQLSelectionSet {
+                public static let possibleTypes: [String] = ["Media"]
+
+                public static var selections: [GraphQLSelection] {
+                  return [
+                    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("url", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("width", type: .scalar(Int.self)),
+                    GraphQLField("height", type: .scalar(Int.self)),
+                    GraphQLField("mimeType", type: .scalar(String.self)),
+                  ]
+                }
+
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public init(url: String, width: Int? = nil, height: Int? = nil, mimeType: String? = nil) {
+                  self.init(unsafeResultMap: ["__typename": "Media", "url": url, "width": width, "height": height, "mimeType": mimeType])
+                }
+
+                public var __typename: String {
+                  get {
+                    return resultMap["__typename"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                /// The token image nft
+                public var url: String {
+                  get {
+                    return resultMap["url"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "url")
+                  }
+                }
+
+                /// Width - will always be null on the public API
+                public var width: Int? {
+                  get {
+                    return resultMap["width"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "width")
+                  }
+                }
+
+                /// Height - will always be null on the public API
+                public var height: Int? {
+                  get {
+                    return resultMap["height"] as? Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "height")
+                  }
+                }
+
+                /// The image/audio/video mime type for the publication
+                public var mimeType: String? {
+                  get {
+                    return resultMap["mimeType"] as? String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "mimeType")
+                  }
+                }
+              }
+            }
+          }
+
+          public struct Depatcher: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["Dispatcher"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("address", type: .nonNull(.scalar(String.self))),
+                GraphQLField("canUseRelay", type: .nonNull(.scalar(Bool.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(address: String, canUseRelay: Bool) {
+              self.init(unsafeResultMap: ["__typename": "Dispatcher", "address": address, "canUseRelay": canUseRelay])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// The dispatcher address
+            public var address: String {
+              get {
+                return resultMap["address"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "address")
+              }
+            }
+
+            /// If the dispatcher can use the relay
+            public var canUseRelay: Bool {
+              get {
+                return resultMap["canUseRelay"]! as! Bool
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "canUseRelay")
+              }
+            }
+          }
+
+          public struct Stat: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["ProfileStats"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("totalFollowers", type: .nonNull(.scalar(Int.self))),
+                GraphQLField("totalFollowing", type: .nonNull(.scalar(Int.self))),
+                GraphQLField("totalPosts", type: .nonNull(.scalar(Int.self))),
+                GraphQLField("totalComments", type: .nonNull(.scalar(Int.self))),
+                GraphQLField("totalMirrors", type: .nonNull(.scalar(Int.self))),
+                GraphQLField("totalPublications", type: .nonNull(.scalar(Int.self))),
+                GraphQLField("totalCollects", type: .nonNull(.scalar(Int.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(totalFollowers: Int, totalFollowing: Int, totalPosts: Int, totalComments: Int, totalMirrors: Int, totalPublications: Int, totalCollects: Int) {
+              self.init(unsafeResultMap: ["__typename": "ProfileStats", "totalFollowers": totalFollowers, "totalFollowing": totalFollowing, "totalPosts": totalPosts, "totalComments": totalComments, "totalMirrors": totalMirrors, "totalPublications": totalPublications, "totalCollects": totalCollects])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// Total follower count
+            public var totalFollowers: Int {
+              get {
+                return resultMap["totalFollowers"]! as! Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "totalFollowers")
+              }
+            }
+
+            /// Total following count (remember the wallet follows not profile so will be same for every profile they own)
+            public var totalFollowing: Int {
+              get {
+                return resultMap["totalFollowing"]! as! Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "totalFollowing")
+              }
+            }
+
+            /// Total post count
+            public var totalPosts: Int {
+              get {
+                return resultMap["totalPosts"]! as! Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "totalPosts")
+              }
+            }
+
+            /// Total comment count
+            public var totalComments: Int {
+              get {
+                return resultMap["totalComments"]! as! Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "totalComments")
+              }
+            }
+
+            /// Total mirror count
+            public var totalMirrors: Int {
+              get {
+                return resultMap["totalMirrors"]! as! Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "totalMirrors")
+              }
+            }
+
+            /// Total publication count
+            public var totalPublications: Int {
+              get {
+                return resultMap["totalPublications"]! as! Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "totalPublications")
+              }
+            }
+
+            /// Total collects count
+            public var totalCollects: Int {
+              get {
+                return resultMap["totalCollects"]! as! Int
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "totalCollects")
+              }
+            }
+          }
+
+          public struct FollowModule: GraphQLSelectionSet {
+            public static let possibleTypes: [String] = ["FeeFollowModuleSettings"]
+
+            public static var selections: [GraphQLSelection] {
+              return [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("type", type: .nonNull(.scalar(FollowModules.self))),
+                GraphQLField("amount", type: .nonNull(.object(Amount.selections))),
+                GraphQLField("recipient", type: .nonNull(.scalar(String.self))),
+              ]
+            }
+
+            public private(set) var resultMap: ResultMap
+
+            public init(unsafeResultMap: ResultMap) {
+              self.resultMap = unsafeResultMap
+            }
+
+            public init(type: FollowModules, amount: Amount, recipient: String) {
+              self.init(unsafeResultMap: ["__typename": "FeeFollowModuleSettings", "type": type, "amount": amount.resultMap, "recipient": recipient])
+            }
+
+            public var __typename: String {
+              get {
+                return resultMap["__typename"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            /// The follow modules enum
+            public var type: FollowModules {
+              get {
+                return resultMap["type"]! as! FollowModules
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "type")
+              }
+            }
+
+            /// The collect module amount info
+            public var amount: Amount {
+              get {
+                return Amount(unsafeResultMap: resultMap["amount"]! as! ResultMap)
+              }
+              set {
+                resultMap.updateValue(newValue.resultMap, forKey: "amount")
+              }
+            }
+
+            /// The collect module recipient address
+            public var recipient: String {
+              get {
+                return resultMap["recipient"]! as! String
+              }
+              set {
+                resultMap.updateValue(newValue, forKey: "recipient")
+              }
+            }
+
+            public struct Amount: GraphQLSelectionSet {
+              public static let possibleTypes: [String] = ["ModuleFeeAmount"]
+
+              public static var selections: [GraphQLSelection] {
+                return [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("asset", type: .nonNull(.object(Asset.selections))),
+                  GraphQLField("value", type: .nonNull(.scalar(String.self))),
+                ]
+              }
+
+              public private(set) var resultMap: ResultMap
+
+              public init(unsafeResultMap: ResultMap) {
+                self.resultMap = unsafeResultMap
+              }
+
+              public init(asset: Asset, value: String) {
+                self.init(unsafeResultMap: ["__typename": "ModuleFeeAmount", "asset": asset.resultMap, "value": value])
+              }
+
+              public var __typename: String {
+                get {
+                  return resultMap["__typename"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              /// The erc20 token info
+              public var asset: Asset {
+                get {
+                  return Asset(unsafeResultMap: resultMap["asset"]! as! ResultMap)
+                }
+                set {
+                  resultMap.updateValue(newValue.resultMap, forKey: "asset")
+                }
+              }
+
+              /// Floating point number as string (e.g. 42.009837). It could have the entire precision of the Asset or be truncated to the last significant decimal.
+              public var value: String {
+                get {
+                  return resultMap["value"]! as! String
+                }
+                set {
+                  resultMap.updateValue(newValue, forKey: "value")
+                }
+              }
+
+              public struct Asset: GraphQLSelectionSet {
+                public static let possibleTypes: [String] = ["Erc20"]
+
+                public static var selections: [GraphQLSelection] {
+                  return [
+                    GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("name", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("symbol", type: .nonNull(.scalar(String.self))),
+                    GraphQLField("decimals", type: .nonNull(.scalar(Int.self))),
+                    GraphQLField("address", type: .nonNull(.scalar(String.self))),
+                  ]
+                }
+
+                public private(set) var resultMap: ResultMap
+
+                public init(unsafeResultMap: ResultMap) {
+                  self.resultMap = unsafeResultMap
+                }
+
+                public init(name: String, symbol: String, decimals: Int, address: String) {
+                  self.init(unsafeResultMap: ["__typename": "Erc20", "name": name, "symbol": symbol, "decimals": decimals, "address": address])
+                }
+
+                public var __typename: String {
+                  get {
+                    return resultMap["__typename"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                /// Name of the symbol
+                public var name: String {
+                  get {
+                    return resultMap["name"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "name")
+                  }
+                }
+
+                /// Symbol for the token
+                public var symbol: String {
+                  get {
+                    return resultMap["symbol"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "symbol")
+                  }
+                }
+
+                /// Decimal places for the token
+                public var decimals: Int {
+                  get {
+                    return resultMap["decimals"]! as! Int
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "decimals")
+                  }
+                }
+
+                /// The erc20 address
+                public var address: String {
+                  get {
+                    return resultMap["address"]! as! String
+                  }
+                  set {
+                    resultMap.updateValue(newValue, forKey: "address")
                   }
                 }
               }

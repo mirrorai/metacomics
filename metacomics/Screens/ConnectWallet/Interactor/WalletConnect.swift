@@ -4,6 +4,7 @@
 
 import Foundation
 import WalletConnectSwift
+import UIKit
 
 protocol WalletConnectDelegate {
     func failedToConnect()
@@ -89,6 +90,19 @@ class WalletConnect {
                 case unknown
             }
             throw TestError.unknown
+        }
+    }
+    
+    func openWallet() {
+        let wcUrl =  WCURL(topic: UUID().uuidString,
+                           bridgeURL: URL(string: "https://bridge.walletconnect.org")!,
+                           key: try! randomKey())
+        guard let url = URL(string: wcUrl.absoluteString) else { return }
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(
+                url, options: [:],
+                completionHandler: nil
+            )
         }
     }
 }
