@@ -34,7 +34,7 @@ class BigButtonViewController: UIViewController {
     private func getBalance(address: String) {
         DispatchQueue.global().async {
             do {
-                let providerUrlString = "https://eth-rinkeby.alchemyapi.io/v2/XumJjnNzRjAI7hB9_IYDhrHdjChHTm2C"
+                let providerUrlString = "https://polygon-mumbai.g.alchemy.com/v2/GlRUiAxYwFVvUrRpt9uUmuArSZ4bDblP"
                 let providerUrl = URL(string: providerUrlString)!
                 guard let provider = Web3HttpProvider(providerUrl) else { return }
                 let web3 = web3(provider: provider)
@@ -61,7 +61,7 @@ class BigButtonViewController: UIViewController {
     private func callContractMethod(address: String) {
         DispatchQueue.global().async {
             do {
-                let providerUrlString = "https://eth-rinkeby.alchemyapi.io/v2/XumJjnNzRjAI7hB9_IYDhrHdjChHTm2C"
+                let providerUrlString = "https://polygon-mumbai.g.alchemy.com/v2/GlRUiAxYwFVvUrRpt9uUmuArSZ4bDblP"
                 let providerUrl = URL(string: providerUrlString)!
                 guard let provider = Web3HttpProvider(providerUrl) else { return }
                 let web3 = web3(provider: provider)
